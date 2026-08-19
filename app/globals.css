@@ -1,0 +1,24 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #f5f7fb;
+}
+
+body,
+main,
+iframe {
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  display: block;
+}
+
+iframe {
+  display: block;
+  border: 0;
+}
