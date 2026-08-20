@@ -1,4 +1,13 @@
-# vinext-starter
+# Loopit Template Showcase
+
+Public dashboard: https://awoele.github.io/loopit-template-showcase/
+
+## GitHub Pages
+
+The workflow in `.github/workflows/pages.yml` exports the site with the
+`/loopit-template-showcase` base path, verifies the generated artifact, and
+deploys `out/` whenever `main` is updated. In the GitHub repository settings,
+set **Pages > Build and deployment > Source** to **GitHub Actions**.
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
@@ -89,6 +98,8 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
+- `npm run build:pages`: create the static GitHub Pages artifact in `out/`
+- `npm run test:pages`: verify the generated Pages artifact and base paths
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 

@@ -54,3 +54,24 @@ test("ships the complete interactive static dashboard", async () => {
   assert.match(robots, /Disallow:\s*\//i);
   assert.ok(previewImage.length > 100_000);
 });
+
+test("keeps the GitHub Pages static-export contract", async () => {
+  const [page, layout, nextConfig, packageJson, workflow, pagesTsconfig] =
+    await Promise.all([
+      readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../next.config.ts", import.meta.url), "utf8"),
+      readFile(new URL("../package.json", import.meta.url), "utf8"),
+      readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
+      readFile(new URL("../tsconfig.pages.json", import.meta.url), "utf8"),
+    ]);
+
+  assert.match(page, /publicAsset\("\/dashboard\/index\.html"\)/);
+  assert.match(layout, /new URL\("og\.png", siteUrl\)/);
+  assert.match(nextConfig, /output:\s*"export"/);
+  assert.match(nextConfig, /assetPrefix:\s*basePath/);
+  assert.match(packageJson, /"build:pages":\s*"next build"/);
+  assert.match(workflow, /NEXT_PUBLIC_BASE_PATH:\s*\/loopit-template-showcase/);
+  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.doesNotThrow(() => JSON.parse(pagesTsconfig));
+});
