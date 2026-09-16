@@ -2,26 +2,2270 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="description" content="模板体验方法展示｜公开版">
+  <link rel="icon" href="data:,">
   <title>模板体验方法展示｜公开版</title>
   <style>
-    :root{--ink:#122123;--paper:#f4f6f5;--card:#fff;--muted:#61706f;--line:#d7dfdd;--accent:#f05b39}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 Inter,"Microsoft YaHei",sans-serif}.page{width:min(100% - 40px,1080px);margin:auto;padding:68px 0}.eyebrow{color:var(--accent);font:700 12px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}h1{max-width:760px;margin:16px 0;font-size:clamp(42px,7vw,78px);line-height:1.02;letter-spacing:-.06em}.lead{max-width:700px;color:var(--muted);font-size:20px}.notice{margin:38px 0;padding:16px 18px;background:#fff3ef;border-left:3px solid var(--accent);color:#744232}.matrix{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{padding:25px;background:var(--card);border:1px solid var(--line);border-radius:16px}.step{color:var(--accent);font:700 12px/1 ui-monospace,monospace}.card h2{margin:24px 0 8px;font-size:25px}.card p{margin:0;color:var(--muted)}.footer{margin-top:54px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}@media(max-width:680px){.page{width:min(100% - 32px,1080px);padding:48px 0}.matrix{grid-template-columns:1fr}.lead{font-size:18px}}
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #f9fbfe;
+      --ink: #172033;
+      --muted: #607086;
+      --line: #dfe6f0;
+      --blue: #2563eb;
+      --green: #0f8f65;
+      --violet: #6d5bd0;
+      --cyan: #0891b2;
+      --red: #c2413d;
+      --amber: #b7791f;
+      --shadow: 0 12px 28px rgba(22, 32, 51, .07);
+      --section-gap: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-y: scroll; scrollbar-gutter: stable; }
+    body {
+      margin: 0;
+      min-width: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      font-size: 16px;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .page { width: min(1320px, calc(100% - 36px)); margin: 0 auto; padding: 26px 0 42px; }
+    .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+    h1 { margin: 0; font-size: 24px; line-height: 30px; font-weight: 850; letter-spacing: -.02em; }
+    h2 { margin: 0; font-size: 16px; line-height: 20px; font-weight: 820; }
+    h3 { margin: 0; font-size: 13px; font-weight: 780; }
+    .subtitle { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .data-status { padding: 7px 10px; border-radius: 999px; color: #3e536b; background: #eaf0f7; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .panel-data-status { display: inline-flex; align-items: center; min-height: 26px; padding: 4px 9px; border-radius: 999px; font-size: 10px; font-weight: 760; white-space: nowrap; }
+    .panel-data-status[data-state="loading"] { color: #3e536b; background: #eaf0f7; }
+    .panel-data-status[data-state="complete"] { color: var(--green); background: #e9f7f1; }
+    .panel-data-status[data-state="partial"] { color: #8a5c0a; background: #fff3d6; }
+    .panel-data-status[data-state="empty"] { color: #68798d; background: #edf1f6; }
+    .panel-data-status[data-state="error"] { color: var(--red); background: #fdeceb; }
+    .funnel-heading-actions { display: flex; align-items: center; gap: 10px; }
+    .card {
+      margin-bottom: var(--section-gap);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .toolbar { padding: 18px; }
+    .control-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .control-row + .control-row { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .control-label { min-width: 42px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .btn {
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid #cdd8e7;
+      border-radius: 8px;
+      color: #3e536b;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 720;
+    }
+    .btn:hover { border-color: #98a9bf; }
+    .btn.active, .btn-primary { border-color: var(--ink); color: #fff; background: var(--ink); }
+    .date-summary { margin-left: auto; color: var(--muted); font-size: 12px; }
+    .custom-range { display: inline-flex; align-items: center; gap: 7px; }
+    .custom-range[hidden] { display: none; }
+    .date-input {
+      min-height: 36px;
+      padding: 0 10px;
+      border: 1px solid #cdd8e7;
+      border-radius: 8px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 13px;
+    }
+    .range-hint { color: var(--muted); font-size: 11px; }
+    .range-message { min-height: 16px; margin: 8px 0 0 50px; color: var(--red); font-size: 11px; }
+    .tabs { display: flex; gap: 8px; overflow-x: auto; }
+    .tabs .btn { font-size: 16px; white-space: nowrap; }
+    [data-panel][hidden] { display: none !important; }
+
+    .section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .section-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .source-badge { padding: 4px 7px; border-radius: 999px; color: var(--violet); background: #f0edff; font-size: 10px; font-weight: 760; white-space: nowrap; }
+    .source-badge.real { color: var(--green); background: #e9f7f1; }
+    .panel-pad { padding: 18px; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .kpi { padding: 16px; margin: 0; }
+    .kpi-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; }
+    .kpi-value { margin: 13px 0 5px; font-size: 27px; line-height: 1; font-weight: 820; letter-spacing: -.03em; }
+    .kpi-foot { color: var(--muted); font-size: 11px; }
+    .positive { color: var(--green); }
+    .negative { color: var(--red); }
+    .warning { color: var(--amber); }
+
+    .two-col { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr); gap: 18px; }
+    .chart-wrap { position: relative; height: 280px; }
+    .chart { display: block; width: 100%; height: 100%; }
+    .legend { display: flex; align-items: center; gap: 16px; margin-top: 10px; color: var(--muted); font-size: 11px; }
+    .legend span::before { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; background: var(--blue); content: ""; }
+    .legend span.green::before { background: var(--green); }
+    .legend span.violet::before { background: var(--violet); }
+
+    .funnel { display: grid; gap: 10px; }
+    .funnel-row { display: grid; grid-template-columns: 104px 1fr 70px; align-items: center; gap: 10px; }
+    .funnel-label { color: var(--muted); font-size: 12px; }
+    .funnel-track { height: 24px; border-radius: 5px; background: #edf2f7; overflow: hidden; }
+    .funnel-bar { height: 100%; min-width: 4px; border-radius: inherit; background: var(--blue); }
+    .funnel-row:nth-child(2) .funnel-bar { background: #3f76df; }
+    .funnel-row:nth-child(3) .funnel-bar { background: var(--cyan); }
+    .funnel-row:nth-child(4) .funnel-bar { background: var(--green); }
+    .funnel-value { text-align: right; font-size: 12px; font-weight: 760; }
+    .note { margin-top: 13px; padding: 11px 12px; border-left: 3px solid var(--amber); color: #684b16; background: #fff8e8; font-size: 11px; line-height: 1.55; }
+
+    .table-card { overflow: hidden; }
+    .table-head { padding: 18px 18px 13px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 920px; border-collapse: collapse; font-size: 11.5px; }
+    .chain-table { min-width: 1180px; }
+    th, td { padding: 8px 7px 8px 10px; text-align: right; border-top: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--muted); background: #fbfcff; font-weight: 780; }
+    th:first-child, td:first-child { text-align: left; }
+    tbody tr:hover { background: #f7f9fc; }
+    .overall-row { background: #f1f5fb; font-weight: 760; }
+    .overall-row:hover { background: #eaf0f8; }
+    .overall-row .template-name-cell b { color: #172033; font-weight: 850; }
+    .overall-row .template-name-cell small { color: #607086; }
+    .overall-sticky-portal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      display: none;
+      overflow: hidden;
+      pointer-events: none;
+      background: #f1f5fb;
+      box-shadow: 0 1px 0 var(--line), 0 10px 22px -15px rgba(22, 32, 51, .72);
+    }
+    .overall-sticky-portal [data-usage-unit] { pointer-events: auto; cursor: pointer; }
+    .overall-sticky-portal table { margin: 0; table-layout: fixed; }
+    .overall-sticky-portal thead th { background: #fbfcff; }
+    .overall-sticky-portal .overall-row > td { background: #f1f5fb; }
+    .sticky-1 { position: sticky; left: 0; min-width: 190px; background: var(--surface); z-index: 2; }
+    th.sticky-1 { background: #fbfcff; z-index: 3; }
+    .sticky-2 { position: sticky; left: 190px; min-width: 104px; background: var(--surface); box-shadow: 10px 0 18px -16px rgba(22, 32, 51, .6); z-index: 2; }
+    th.sticky-2 { background: #fbfcff; z-index: 3; }
+    .template-name-cell { min-width: 210px; text-align: left !important; }
+    .template-name-cell b { display: block; color: var(--ink); font-size: 12px; font-weight: 760; }
+    .template-name-cell small { display: block; margin-top: 3px; color: #8a97a8; font-size: 9px; font-weight: 620; }
+    .bar-cell { display: inline-flex; align-items: center; gap: 7px; }
+    .microbar { width: 52px; height: 5px; border-radius: 99px; background: #e9eef5; overflow: hidden; }
+    .microbar i { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+    .stage-cell { color: var(--ink); background: #f7f9fc; font-weight: 800; text-align: center !important; vertical-align: middle; }
+    .highlight-cell { background: #fff4a8; color: #5e4b00; font-weight: 800; }
+    .pending { color: #93a1b3; font-style: italic; }
+    .empty-state { display: grid; min-height: 220px; place-items: center; padding: 24px; border: 1px dashed #cdd8e7; border-radius: 8px; color: var(--muted); background: var(--surface-2); font-size: 12px; text-align: center; }
+
+    .metric-switch { display: flex; gap: 7px; flex-wrap: wrap; }
+    .metric-switch .btn { min-height: 30px; font-size: 12px; }
+    .hbars { display: grid; gap: 14px; }
+    .hbar-row { display: grid; grid-template-columns: 170px 1fr 76px; align-items: center; gap: 12px; }
+    .hbar-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+    .hbar-track { height: 12px; border-radius: 99px; background: #edf2f7; overflow: hidden; }
+    .hbar-fill { height: 100%; border-radius: inherit; background: var(--blue); transition: width .25s ease; }
+    .hbar-value { text-align: right; font-size: 12px; font-weight: 760; }
+    .alert-row .hbar-fill { background: var(--red); }
+    .alert-row .hbar-value { color: var(--red); }
+
+    .rank-list { display: grid; gap: 12px; }
+    .rank-row { display: grid; grid-template-columns: 170px 1fr 58px; align-items: center; gap: 10px; }
+    .rank-track { height: 10px; border-radius: 99px; background: #edf2f7; overflow: hidden; }
+    .rank-track i { display: block; height: 100%; border-radius: inherit; background: var(--violet); }
+    .rank-value { text-align: right; font-size: 12px; font-weight: 760; }
+
+    .retention-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+    .retention-stat { padding: 16px; margin: 0; }
+    .retention-stat strong { display: block; margin-top: 8px; font-size: 25px; }
+    .method-card { padding: 18px; }
+    .method-list { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+    .footer { color: var(--muted); font-size: 11px; text-align: center; }
+    @media (max-width: 980px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .page { width: calc(100% - 24px); padding-top: 18px; }
+      .page-header { flex-direction: column; }
+      .date-summary { width: 100%; margin-left: 50px; }
+      .custom-range { width: 100%; margin-left: 50px; flex-wrap: wrap; }
+      .kpi-grid, .retention-summary { grid-template-columns: 1fr; }
+      .hbar-row, .rank-row { grid-template-columns: 118px 1fr 58px; }
+      .chart-wrap { height: 240px; }
+    }
+
+    /* Visual system aligned with the supplied site_compare dashboard. */
+    body { background: #f4f6fb; color: #182033; font-size: 14px; }
+    .page { width: calc(100% - 20px); max-width: 1440px; padding: 26px 0 34px; }
+    .page-header { align-items: center; margin-bottom: 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      display: grid; width: 34px; height: 34px; place-items: center;
+      border-radius: 8px; color: #fff; background: #182033;
+      box-shadow: 0 5px 12px rgba(24,32,51,.16); font-size: 11px; font-weight: 850;
+    }
+    h1 { font-size: 25px; line-height: 30px; font-weight: 850; letter-spacing: -.025em; }
+    h2 { font-size: 17px; line-height: 22px; font-weight: 820; }
+    .subtitle { margin-top: 3px; font-size: 12px; }
+    .data-status {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px;
+      border: 1px solid #d8e1ec; border-radius: 7px; color: #52647b;
+      background: rgba(255,255,255,.74); box-shadow: 0 2px 6px rgba(22,32,51,.04);
+      font-size: 11px; font-weight: 680;
+    }
+    .data-status::before { width: 7px; height: 7px; border-radius: 50%; background: #30a47a; content: ""; }
+    .card { border-color: #e2e7ef; border-radius: 8px; box-shadow: 0 8px 20px rgba(22,32,51,.045); }
+    .toolbar { padding: 16px 18px 17px; }
+    .toolbar-title { margin-bottom: 8px; color: #586a80; font-size: 11px; font-weight: 750; }
+    .toolbar-main { display: flex; align-items: center; gap: 10px; }
+    .tabs { gap: 8px; flex: 1; }
+    .btn {
+      min-height: 38px; padding: 0 16px; border-color: #d4dce7; border-radius: 7px;
+      color: #47586e; box-shadow: 0 1px 2px rgba(22,32,51,.025); font-size: 14px; font-weight: 720;
+    }
+    .tabs .btn { min-width: 116px; font-size: 14px; }
+    .btn.active, .btn-primary { border-color: #182033; background: #182033; box-shadow: none; }
+    .date-control { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .select-label { color: #68798d; font-size: 11px; font-weight: 700; }
+    .range-select {
+      min-width: 118px; height: 38px; padding: 0 34px 0 12px;
+      border: 1px solid #d4dce7; border-radius: 7px; color: #314056; background: #fff;
+      font: inherit; font-size: 13px; font-weight: 680; cursor: pointer;
+    }
+    .custom-range { gap: 6px; }
+    .date-input { min-height: 38px; border-color: #d4dce7; border-radius: 7px; }
+    .range-message { min-height: 0; margin: 8px 0 0; text-align: right; }
+    [data-panel] { width: 100%; min-width: 0; margin-top: 18px; }
+    [data-panel] > * { max-width: 100%; }
+    .toolbar, .page-header, .footer { width: 100%; }
+    .overview-kpis { display: none; }
+    .table-head { padding: 19px 18px 16px; }
+    .section-head { align-items: center; margin-bottom: 16px; }
+    .table-head.section-head { margin-bottom: 0; }
+    .section-head p { margin-top: 4px; color: #68798d; font-size: 11px; }
+    .source-badge { border-radius: 5px; color: #62738a; background: #f1f4f8; font-size: 9px; }
+    .source-badge.real { color: #2c8064; background: #edf7f3; }
+    table { font-size: 12px; }
+    th, td { padding: 10px 9px; border-top-color: #e5e9f0; }
+    th { color: #5b6c82; background: #f8fafc; font-size: 11px; }
+    tbody tr:hover { background: #f8fafc; }
+    .stage-cell { background: #f6f8fb; }
+    .highlight-cell { color: #705c00; background: #fff5b8; }
+    .panel-pad, .method-card { padding: 19px; }
+    .two-col { gap: 14px; }
+    .retention-summary { gap: 14px; }
+    .retention-stat { box-shadow: none; }
+    .footer { margin-top: 6px; }
+    .date-popover-wrap { position: relative; width: 210px; }
+    .range-trigger {
+      width: 100%; height: 38px; padding: 0 12px; border: 1px solid #d4dce7;
+      border-radius: 7px; color: #314056; background: #fff; display: flex;
+      align-items: center; justify-content: space-between; font-size: 13px; font-weight: 720;
+    }
+    .range-trigger::after { color: #76869a; font-size: 16px; content: "⌄"; }
+    .range-popover {
+      position: absolute; z-index: 20; top: calc(100% + 8px); right: 0;
+      width: 580px; padding: 12px; border: 1px solid #d8e1ec; border-radius: 8px;
+      background: #fff; box-shadow: 0 16px 36px rgba(22,32,51,.16);
+    }
+    .range-popover[hidden] { display: none; }
+    .range-popover-grid { display: grid; grid-template-columns: 120px 1fr auto 1fr 70px; align-items: end; gap: 8px; }
+    .range-field { display: grid; gap: 5px; }
+    .range-field label { color: #68798d; font-size: 10px; font-weight: 700; }
+    .range-popover .range-select, .range-popover .date-input { width: 100%; min-width: 0; }
+    .date-separator { align-self: center; color: #76869a; padding-top: 15px; }
+    .hero-card { overflow: hidden; }
+    .hero-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 18px 8px; }
+    .hero-head p { margin: 4px 0 0; color: #68798d; font-size: 11px; }
+    .hero-meta { color: #68798d; font-size: 11px; white-space: nowrap; }
+    .chart-legend { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; padding: 12px 18px 0; color: #303844; font-size: 12px; font-weight: 680; }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .chart-legend i { width: 12px; height: 12px; border-radius: 50%; background: var(--legend); }
+    .legend-tabs { justify-content: flex-start; gap: 14px; padding: 12px 18px 0; }
+    .legend-tabs button { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; color: #303844; background: transparent; font-size: 12px; font-weight: 680; }
+    .legend-tabs .legend-all { padding: 4px 10px; border: 1px solid #172033; border-radius: 999px; color: #68798d; background: #fff; font-size: 11px; font-weight: 800; }
+    .legend-tabs .legend-all.active { color: #fff; background: #172033; }
+    .legend-tabs .legend-series { transition: opacity .18s ease; }
+    .legend-tabs .legend-series:not(.active) { opacity: .35; }
+    .legend-tabs .legend-series[hidden] { display: none; }
+    .legend-tabs i { width: 10px; height: 10px; border: 2px solid var(--legend); background: #fff; }
+    .legend-tabs .legend-series.active i { background: var(--legend); }
+    .trend-template-scope { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 10px 18px 0; padding-top: 10px; border-top: 1px solid #edf1f6; overflow: visible; }
+    .trend-template-scope button { flex: 0 0 auto; max-width: 180px; padding: 6px 12px; border: 1px solid #d9e2ee; border-radius: 999px; overflow: hidden; color: #56677d; background: #fff; font-size: 11px; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
+    .trend-template-scope button.active { border-color: #172033; color: #fff; background: #172033; box-shadow: 0 2px 6px rgba(23,32,51,.12); }
+    .canvas-wrap { position: relative; height: 350px; padding: 8px 14px 14px; }
+    .dashboard-chart { display: block; width: 100%; height: 100%; }
+    .chart-note { padding: 0 18px 16px; color: #8794a6; font-size: 10px; }
+    .feedback-trend-section { margin-top: 24px; }
+    .feedback-template-legend { display: contents; }
+    .feedback-template-search { width: 190px; margin-left: auto; padding: 7px 10px; border: 1px solid #d9e2ee; border-radius: 6px; color: #273348; background: #fff; font-size: 11px; outline: none; }
+    .feedback-template-search::placeholder { color: #9aa6b5; }
+    .feedback-template-search:focus { border-color: #172033; box-shadow: 0 0 0 2px rgba(23,32,51,.08); }
+    .feedback-template-filter { position: relative; }
+    .feedback-template-filter summary { padding: 6px 11px; border: 1px solid #d9e2ee; border-radius: 6px; color: #56677d; background: #fff; font-size: 11px; font-weight: 760; cursor: pointer; list-style: none; }
+    .feedback-template-filter summary::-webkit-details-marker { display: none; }
+    .feedback-template-filter summary::after { margin-left: 8px; color: #8794a6; content: "⌄"; }
+    .feedback-template-filter[open] summary { border-color: #172033; color: #172033; }
+    .feedback-template-filter-menu { position: absolute; z-index: 15; top: calc(100% + 6px); right: 0; width: 270px; max-height: 280px; overflow: auto; padding: 8px; border: 1px solid #d8e1ec; border-radius: 8px; background: #fff; box-shadow: 0 12px 28px rgba(22,32,51,.16); }
+    .feedback-template-filter-menu label { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 5px; color: #46566b; font-size: 11px; font-weight: 680; cursor: pointer; }
+    .feedback-template-filter-menu label:hover { background: #f4f7fb; }
+    .feedback-template-filter-menu input { accent-color: #172033; }
+    .metric-strip { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #edf0f5; }
+    .metric-chip { padding: 14px 18px; border-right: 1px solid #edf0f5; }
+    .metric-chip:last-child { border-right: 0; }
+    .metric-chip span { display: block; color: #68798d; font-size: 10px; font-weight: 700; }
+    .metric-chip strong { display: block; margin-top: 5px; font-size: 20px; line-height: 1; }
+    .rank-hero { padding: 12px 18px 20px; }
+    .rank-hero .rank-list { gap: 15px; }
+    .rank-hero .rank-row { grid-template-columns: 190px 1fr 64px; }
+    .rank-hero .rank-track { height: 14px; border-radius: 4px; }
+    .rank-hero .rank-track i { border-radius: 4px; background: #4c84ff; }
+    .efficiency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px 18px 20px; }
+    .efficiency-item { padding: 15px; border: 1px solid #e2e7ef; border-radius: 8px; background: #fbfcff; }
+    .efficiency-item .label { color: #273348; font-size: 12px; font-weight: 800; }
+    .compare-values { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .compare-col { min-width: 0; }
+    .compare-col span, .compare-delta span { display: block; color: #7b899c; font-size: 9px; font-weight: 700; }
+    .compare-col strong { display: block; margin-top: 5px; color: #273348; font-size: 17px; line-height: 1.15; white-space: nowrap; }
+    .compare-delta { margin-top: 14px; padding-top: 11px; border-top: 1px solid #e5e9f0; }
+    .compare-delta strong { display: block; margin-top: 5px; color: var(--green); font-size: 15px; line-height: 1.2; }
+    .index-track { height: 8px; overflow: hidden; border-radius: 99px; background: #e8edf4; }
+    .index-track i { display: block; height: 100%; border-radius: inherit; background: #4c84ff; }
+    .detail-label { margin: 4px 0 9px 2px; color: #68798d; font-size: 11px; font-weight: 760; }
+    .feedback-summary { margin-bottom: 18px; }
+    .feedback-summary-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 10px; padding: 0 2px; }
+    .feedback-summary-head p { margin: 4px 0 0; color: #68798d; font-size: 11px; }
+    .feedback-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .feedback-kpi.card { min-height: 112px; margin: 0; padding: 15px 16px; box-shadow: none; }
+    .feedback-kpi .label { color: #68798d; font-size: 11px; font-weight: 720; }
+    .feedback-kpi .value { margin-top: 12px; font-size: 25px; line-height: 1; font-weight: 860; letter-spacing: -.02em; }
+    .feedback-kpi .unit { margin-left: 3px; color: #68798d; font-size: 11px; font-weight: 700; }
+    .feedback-kpi .foot { margin-top: 9px; color: #8794a6; font-size: 10px; }
+    .table-card { padding: 16px; overflow: visible; }
+    .table-card .table-head { padding: 0 2px 12px; }
+    .table-card .feedback-summary-head { margin-bottom: 12px; padding: 0 2px; }
+    .table-card .table-wrap { overflow: auto; border: 1px solid #dfe6ef; border-radius: 8px; }
+    .table-card thead th { border-top: 0; }
+    .table-card tbody tr:last-child td { border-bottom: 0; }
+    .detail-table tbody .total-row td { border-top: 2px solid #cbd5e1; background: #f4f7fb; color: #172033; font-weight: 800; }
+    .detail-table tbody .total-row:hover td { background: #eef3f9; }
+    .detail-table tbody .total-row .template-name-cell small { color: #6b7b90; font-weight: 650; }
+    .table-card th, .table-card td { padding-top: 9px; padding-bottom: 9px; }
+    .detail-table { width: 100%; min-width: 0; table-layout: auto; font-size: 11px; }
+    .detail-table th { min-width: 58px; padding-left: 6px; padding-right: 6px; white-space: normal; line-height: 1.25; }
+    .detail-table td { padding-left: 6px; padding-right: 6px; white-space: nowrap; }
+    .detail-table th:first-child, .detail-table td:first-child { width: 1%; min-width: 190px; }
+    .cell-progress { position: relative; min-width: 54px; padding: 5px 6px; overflow: hidden; border-radius: 4px; text-align: right; }
+    .cell-progress::before {
+      position: absolute; inset: 2px auto 2px 0; width: var(--progress); border-radius: 4px;
+      background: #c9d9fb; opacity: .72; content: "";
+    }
+    .cell-progress span { position: relative; z-index: 1; color: #273348; font-weight: 720; }
+
+    /* 分模板表按指标口径分区：表头底色、条柱颜色和边界保持一致。 */
+    .usage-table thead tr:first-child .group-cover { background: #eef4ff; color: #526988; }
+    .usage-table thead tr:first-child .group-center { background: #edf8f4; color: #417363; }
+    .usage-table thead tr:first-child .group-feed { background: #fff7e8; color: #816640; }
+    .usage-table thead tr:first-child .group-result { background: #f4f0ff; color: #65588a; }
+    .usage-table thead tr:first-child :is(.group-center, .group-feed, .group-result),
+    .usage-table thead tr:nth-child(2) th:nth-child(4),
+    .usage-table thead tr:nth-child(2) th:nth-child(9),
+    .usage-table thead tr:nth-child(2) th:nth-child(14),
+    .usage-table tbody td:nth-child(5),
+    .usage-table tbody td:nth-child(10),
+    .usage-table tbody td:nth-child(15) {
+      border-left: 2px solid #d2dae7;
+    }
+    .usage-table tbody td:nth-child(n+2):nth-child(-n+4) .cell-progress::before { background: #c9d9fb; }
+    .usage-table tbody td:nth-child(n+5):nth-child(-n+9) .cell-progress::before { background: #bfe5d8; }
+    .usage-table tbody td:nth-child(n+10):nth-child(-n+14) .cell-progress::before { background: #f4d9a8; }
+    .usage-table tbody td:nth-child(n+15):nth-child(-n+17) .cell-progress::before { background: #d9cff3; }
+    .usage-table .cell-progress::before { opacity: .42; }
+    .usage-table { width: 100%; min-width: 0; table-layout: fixed; }
+    .usage-table th, .usage-table td { min-width: 0; }
+    .usage-table th:first-child, .usage-table td:first-child { width: 14%; min-width: 0; }
+    .usage-table .cell-progress { min-width: 0; padding-left: 3px; padding-right: 3px; }
+    .table-card .usage-table-wrap { overflow-x: hidden; }
+    .usage-template-head { vertical-align: top; }
+    .usage-template-head-inner { display: flex; min-height: 64px; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 9px; }
+    .usage-unit-toggle { align-self: stretch; justify-content: center; }
+    .usage-unit-toggle button { flex: 1 1 0; min-width: 0; padding-left: 7px; padding-right: 7px; }
+    .detail-table .sticky-1 { position: static; min-width: 190px; }
+    .trend-section-head { margin-top: 22px; }
+    .retention-panel .hero-head { padding: 15px 18px 6px; }
+    .retention-panel .canvas-wrap { height: clamp(320px, calc(100vh - 820px), 400px); padding-top: 6px; padding-bottom: 10px; }
+    .retention-panel .chart-legend { margin: 7px 18px 0; }
+    .retention-panel .legend-tabs { margin: 0; }
+    .retention-panel .metric-chip { padding: 13px 18px; }
+    .retention-panel .chart-note { padding: 2px 18px 12px; }
+    .retention-panel .detail-label { margin-top: 14px; margin-bottom: 9px; }
+    .retention-panel .two-col { gap: 14px; grid-template-columns: minmax(0, 1.4fr) minmax(280px, .6fr); }
+    .retention-panel .method-card { padding: 17px 18px; }
+    .retention-panel .section-head { margin-bottom: 10px; }
+    .retention-panel .note { margin-top: 10px; padding: 9px 11px; }
+    .retention-panel .method-list { margin-top: 9px; font-size: 11px; line-height: 1.65; }
+    .acquisition-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .acquisition-head p { margin: 4px 0 0; color: #68798d; font-size: 11px; }
+    .acquisition-range { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid #cfe9df; border-radius: 7px; color: #167656; background: #effaf5; font-size: 11px; font-weight: 760; white-space: nowrap; }
+    .acquisition-filters { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+    .acquisition-filters span { margin-right: 2px; color: #68798d; font-size: 11px; font-weight: 720; }
+    .acquisition-filters button { padding: 6px 11px; border: 1px solid #d8e1ec; border-radius: 999px; color: #52647b; background: #fff; font-size: 11px; font-weight: 720; }
+    .acquisition-filters button.active { border-color: #172033; color: #fff; background: #172033; }
+    .acquisition-section { margin-bottom: 18px; }
+    .acquisition-table { min-width: 860px; }
+    .acquisition-table tr.selected-channel td { background: #f0f6ff; }
+    .acquisition-table .coverage { color: #8794a6; font-size: 10px; }
+    .acquisition-metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .acquisition-metric { min-height: 104px; margin: 0; padding: 14px; box-shadow: none; }
+    .acquisition-metric span { display: block; color: #68798d; font-size: 10px; font-weight: 720; }
+    .acquisition-metric strong { display: block; margin-top: 10px; font-size: 22px; line-height: 1; }
+    .acquisition-metric small { display: block; margin-top: 8px; color: #8794a6; font-size: 9px; line-height: 1.4; }
+    .acquisition-funnel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .acquisition-funnel-grid .funnel-card { min-height: 440px; }
+    .acquisition-funnel-grid .funnel-stack { width: 76%; }
+    .retention-card-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .retention-card-grid .acquisition-metric { min-height: 112px; }
+    .retention-card-grid .pending-value { color: #9aa6b6; font-size: 18px; }
+    .date-control.independent-range { opacity: 1; }
+    .share-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .share-table { font-size: 10px; }
+    .share-definition { margin-top: 10px; padding: 11px 14px; border: 1px solid #dfe6ef; border-left: 3px solid #35a87b; border-radius: 7px; color: #68798d; background: #fff; font-size: 11px; line-height: 1.65; }
+    .share-definition strong { margin-right: 8px; color: #273348; }
+    .channel-map { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-bottom: 18px; }
+    .channel-item { display: flex; min-width: 0; padding: 10px 11px; border: 1px solid #dfe6ef; border-radius: 7px; align-items: center; justify-content: space-between; gap: 10px; background: #fff; }
+    .channel-item > div { min-width: 0; }
+    .channel-item strong { display: block; color: #273348; font-size: 11px; }
+    .channel-item span { display: block; margin-top: 4px; color: #8794a6; font-size: 9px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .channel-item b { flex: 0 0 auto; color: #172033; font-size: 18px; line-height: 1; font-weight: 850; font-variant-numeric: tabular-nums; }
+    .funnel-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: 12px; }
+    .funnel-card { display: flex; min-width: 0; height: 100%; padding: 14px 16px; flex-direction: column; }
+    .funnel-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+    .funnel-card-head p { margin: 4px 0 0; color: #68798d; font-size: 10px; }
+    .funnel-stack { display: grid; justify-items: center; gap: 5px; width: 72%; margin: 0 auto; padding: 6px 0 3px; }
+    .funnel-stage {
+      position: relative; width: var(--w); min-width: 60px; min-height: 46px;
+    }
+    .funnel-body {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3px;
+      padding: 4px 10px 2px; overflow: hidden; color: #fff; flex-direction: column;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--c), white 7%), var(--c));
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+      filter: drop-shadow(7px 7px 0 rgba(39,51,72,.24));
+    }
+    .funnel-body > * { position: relative; z-index: 2; }
+    #resultFunnel { gap: 6px; padding-top: 6px; }
+    #resultFunnel .funnel-stage { min-height: 64px; }
+    .funnel-stage span { max-width: 100%; overflow: visible; white-space: normal; font-size: 9px; font-weight: 760; line-height: 1.2; text-align: center; }
+    #centerFunnel .funnel-stage:last-child span { font-size: 8px; }
+    .funnel-stage strong { flex: 0 0 auto; font-size: 12px; line-height: 1.1; white-space: nowrap; }
+    .funnel-empty { display: flex; width: 100%; min-height: 220px; align-items: center; justify-content: center; color: #8794a6; font-size: 11px; font-weight: 650; text-align: center; }
+    .funnel-stage em {
+      position: absolute; z-index: 3; top: 50%; right: -78px; width: 66px; color: #273348;
+      transform: translateY(-50%);
+      font-size: 10px; font-style: normal; font-weight: 780; text-align: left; white-space: nowrap;
+    }
+    .funnel-stage em::before {
+      position: absolute; top: 50%; left: -24px; width: 19px; height: 2px;
+      background: color-mix(in srgb, var(--c), white 12%); transform: translateY(-50%); content: "";
+    }
+    .funnel-stage em::after {
+      position: absolute; top: 50%; left: -33px; width: 11px; height: 11px; border: 3px solid #fff; border-radius: 50%;
+      background: var(--c); box-shadow: 0 0 0 1px color-mix(in srgb, var(--c), black 4%); transform: translateY(-50%); content: "";
+    }
+    .chain-note { margin-top: auto; padding: 10px 11px; border: 1px solid #e1e7ef; border-radius: 7px; color: #5e6f85; background: #f8fafc; font-size: 9px; line-height: 1.55; }
+    .funnel-methods { margin-top: 18px; }
+    .funnel-method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .funnel-method-card { padding: 17px 18px; }
+    .funnel-method-card h3 { margin: 0 0 8px; font-size: 14px; }
+    .funnel-method-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .funnel-method-card .event-chain { margin: 11px 0; padding: 10px 11px; border-radius: 7px; background: #f6f8fb; color: #24324a; font-size: 10px; line-height: 1.65; overflow-wrap: anywhere; }
+    .funnel-method-card .reasonability { color: #16815e; }
+    .funnel-method-card .reasonability::before { content: "口径判断 · "; font-weight: 750; }
+    .section-title-block { margin: 22px 0 12px; padding: 0 2px; }
+    .section-title-block h2 { font-size: 19px; line-height: 1.25; font-weight: 850; }
+    .section-title-block p { margin: 5px 0 0; color: #68798d; font-size: 11px; }
+    .funnel-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+    .funnel-unit-toggle { display: inline-flex; flex: 0 0 auto; gap: 3px; padding: 3px; border: 1px solid #dce4ef; border-radius: 8px; background: #fff; }
+    .funnel-unit-toggle button { min-width: 52px; padding: 6px 11px; border: 0; border-radius: 6px; color: #66768b; background: transparent; font-size: 10px; font-weight: 760; }
+    .funnel-unit-toggle button.active { color: #fff; background: #172033; box-shadow: 0 2px 6px rgba(23,32,51,.14); }
+    .trend-funnel-tabs button { min-width: max-content; white-space: nowrap; }
+    @media (max-width: 900px) {
+      .toolbar-main { align-items: flex-start; flex-direction: column; }
+      .date-control { width: 100%; margin-left: 0; flex-wrap: wrap; }
+      .tabs { width: 100%; }
+      .tabs .btn { min-width: max-content; }
+      .date-popover-wrap { width: 100%; }
+      .range-popover { left: 0; right: auto; width: min(580px, calc(100vw - 44px)); }
+      .range-popover-grid { grid-template-columns: 1fr; }
+      .date-separator { display: none; }
+      .metric-strip, .efficiency-grid { grid-template-columns: 1fr; }
+      .metric-chip { border-right: 0; border-bottom: 1px solid #edf0f5; }
+      .canvas-wrap { height: 260px; }
+      .feedback-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .share-kpis { grid-template-columns: 1fr; }
+      .channel-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .funnel-grid { grid-template-columns: 1fr; }
+      .funnel-method-grid { grid-template-columns: 1fr; }
+      .acquisition-metrics, .retention-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .acquisition-funnel-grid { grid-template-columns: 1fr; }
+      .funnel-section-heading { align-items: flex-start; flex-direction: column; }
+      .funnel-stack { width: 100%; }
+      .funnel-stage em { right: 12px; width: auto; padding: 3px 6px; border-radius: 4px; color: #fff; background: rgba(255,255,255,.20); font-size: 9px; }
+      .funnel-stage em::before, .funnel-stage em::after { display: none; }
+    }
   </style>
 </head>
 <body>
   <main class="page">
-    <p class="eyebrow">Public portfolio sample · 02</p>
-    <h1>模板体验<br>方法展示</h1>
-    <p class="lead">一个面向产品岗位的展示样例：说明如何定义体验漏斗、验证使用路径并沉淀复盘结论。</p>
-    <aside class="notice">公开作品集版本：所有图表、字段、示例和数值均已移除或改写，不含真实用户数据、模板 ID、项目名称或业务表现。</aside>
-    <section class="matrix" aria-label="工作方法">
-      <article class="card"><span class="step">01 / FRAME</span><h2>定义体验链路</h2><p>识别从触达、理解到完成的关键行为与体验断点。</p></article>
-      <article class="card"><span class="step">02 / OBSERVE</span><h2>观察质量信号</h2><p>结合定性反馈与匿名化汇总信号，定位可优化的环节。</p></article>
-      <article class="card"><span class="step">03 / ITERATE</span><h2>提出迭代方案</h2><p>把问题转译为优先级、验收标准和可执行的设计假设。</p></article>
-      <article class="card"><span class="step">04 / REVIEW</span><h2>沉淀复盘结论</h2><p>记录有效方法与边界条件，为下一轮产品决策提供依据。</p></article>
+    <header class="page-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">TPL</span>
+        <div>
+          <h1>模板体验方法展示｜公开版</h1>
+          <p class="subtitle">观察模板从使用、创作到作品反馈与创作者留存的完整表现</p>
+        </div>
+      </div>
+      <span class="data-status" id="dataStatus">真实数据加载中 · 保留近 30 天</span>
+    </header>
+
+    <section class="card toolbar" aria-label="看板筛选">
+      <div class="toolbar-title">模块</div>
+      <div class="toolbar-main">
+        <nav class="tabs" role="tablist" aria-label="看板模块">
+          <button class="btn active" role="tab" aria-selected="true" data-tab="overview">创作链路数据</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="usage">分模板使用情况</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="duration">分模板创作用时</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="feedback">分模板作品反馈</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="share">站外分享</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="retention">创作留存</button>
+          <button class="btn" role="tab" aria-selected="false" data-tab="acquisition">投放渠道</button>
+        </nav>
+        <div class="date-control">
+          <span class="select-label">时间</span>
+          <div class="date-popover-wrap">
+            <button class="range-trigger" id="rangeTrigger" type="button" aria-expanded="false">日期范围</button>
+            <div class="range-popover" id="rangePopover" hidden>
+              <div class="range-popover-grid">
+                <div class="range-field">
+                  <label for="rangeSelect">快捷范围</label>
+                  <select class="range-select" id="rangeSelect" aria-label="日期范围">
+                    <option value="yesterday">昨天</option>
+                    <option value="7" selected>近 7 天</option>
+                    <option value="custom">自定义</option>
+                  </select>
+                </div>
+                <div class="range-field"><label for="startDate">开始日期</label><input class="date-input" id="startDate" type="date" aria-label="开始日期"></div>
+                <span class="date-separator">→</span>
+                <div class="range-field"><label for="endDate">结束日期</label><input class="date-input" id="endDate" type="date" aria-label="结束日期"></div>
+                <button class="btn btn-primary" id="applyRange">应用</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="range-message" id="rangeMessage" role="status" aria-live="polite"></p>
+      <span class="date-summary" id="dateSummary" hidden></span>
     </section>
-    <p class="footer">本页不连接数据接口，亦不包含原始明细、人员、账号、任务或素材信息。</p>
+
+    <section data-panel="overview">
+      <div class="kpi-grid overview-kpis">
+        <article class="card kpi"><div class="kpi-label"><span id="kpiCenterEntryLabel">➕入口人次</span><span class="source-badge real">真实数据</span></div><div class="kpi-value" id="kpiCenterEntry">—</div><div class="kpi-foot">点击链路漏斗入口</div></article>
+        <article class="card kpi"><div class="kpi-label"><span id="kpiFeedEntryLabel">Feed Template 入口人次</span><span class="source-badge real">真实数据</span></div><div class="kpi-value" id="kpiFeedEntry">—</div><div class="kpi-foot">信息流 Template 入口</div></article>
+        <article class="card kpi"><div class="kpi-label"><span>➕ Use 率</span><span class="source-badge real">真实数据</span></div><div class="kpi-value" id="kpiCenterUseRate">—</div><div class="kpi-foot positive">详情曝光 → Use 点击</div></article>
+        <article class="card kpi"><div class="kpi-label"><span>公开作品发布率</span><span class="source-badge real">真实数据</span></div><div class="kpi-value" id="kpiPublishRate">—</div><div class="kpi-foot">发布成功 / 使用模板创建作品</div></article>
+      </div>
+      <div class="section-title-block funnel-section-heading">
+        <div><h2>链路明细</h2><p>人次展示每日去重用户；链路次数按创作会话严格串联，每个会话每级最多计一次，各级不超过前一级。作品结果按 PID 单独展示</p></div>
+        <div class="funnel-heading-actions">
+          <span class="panel-data-status" data-panel-status="overview" data-state="loading">加载中</span>
+          <div class="funnel-unit-toggle" role="group" aria-label="点击漏斗统计口径">
+            <button class="active" type="button" data-funnel-unit="user_count" aria-pressed="true">人次</button>
+            <button type="button" data-funnel-unit="object_count" aria-pressed="false">链路次数</button>
+          </div>
+        </div>
+      </div>
+      <div class="funnel-grid">
+        <article class="card funnel-card">
+          <div class="funnel-card-head"><div><h2>➕唤起创作页点击漏斗</h2><p>同一用户、同一天；选中模板后按同一模板与 template_use_id 依次关联</p></div><span class="source-badge real" id="centerUnitBadge">样例数量</span></div>
+          <div class="funnel-stack" id="centerFunnel">
+            <div class="funnel-empty">数据加载中</div>
+          </div>
+          <div class="chain-note" id="centerBehaviorNote" hidden>链路次数按 uid + pcsid 去重为创作会话；列表到 Use 还要求同一 tl_sid，卡片到 Use 还要求同一 template_id，Use 后要求同一 template_use_id。刷新和重复曝光不会重复计数。</div>
+        </article>
+        <article class="card funnel-card">
+          <div class="funnel-card-head"><div><h2>Feed Template 点击漏斗</h2><p>同一用户、同一天、同一 template_use_id，按入口 → Create → 创建成功依次关联</p></div><span class="source-badge real" id="feedUnitBadge">样例数量</span></div>
+          <div class="funnel-stack" id="feedFunnel"><div class="funnel-empty">数据加载中</div></div>
+          <div class="chain-note">Feed 入口不经过模板列表、卡片和详情页，因此单独成链。</div>
+        </article>
+        <article class="card funnel-card">
+          <div class="funnel-card-head"><div><h2>作品结果漏斗</h2><p>按去重 PID 展示，与创作用时、作品反馈共用同一数据源</p></div><span class="source-badge real" id="resultUnitBadge">作品 PID</span></div>
+          <div class="funnel-stack" id="resultFunnel">
+            <div class="funnel-empty">数据加载中</div>
+          </div>
+          <div class="chain-note">结果漏斗来自实际 PID。当前数据没有把 Create 点击事件与创建 PID 做稳定归因，因此不与左侧点击漏斗强行相连。</div>
+        </article>
+      </div>
+      <div class="funnel-methods">
+        <div class="feedback-summary-head"><div><h2>漏斗埋点链路与口径说明</h2><p>说明事件、关联键、时间约束及当前口径的适用边界</p></div></div>
+        <div class="funnel-method-grid">
+          <article class="card funnel-method-card">
+            <h3>➕唤起创作页点击漏斗</h3>
+            <div class="event-chain">a_create_tab_clk → a_template_list_exp（list_status=ready）→ a_template_item_clk（click_target=card）→ a_template_detail_exp → a_template_use_clk（button_name=create）→ template_create_btn_clk → template_create_success</div>
+            <p>同一用户、同一天，按事件先后严格关联。全链路要求同一 pcsid；列表到 Use 要求同一 tl_sid，卡片到 Use 要求同一 template_id，Use、Create 和创建成功要求同一 template_use_id，且限定 source=template。链路次数按会话去重，每级最多计一次。</p>
+            <p class="reasonability">列表曝光表示列表成功加载一次，不是每张卡片各计一次。</p>
+          </article>
+          <article class="card funnel-method-card">
+            <h3>Feed Template 点击漏斗</h3>
+            <div class="event-chain">a_project_btn_clk（button_name=template）→ template_create_btn_clk（source=feed）→ template_create_success（source=feed）</div>
+            <p>同一用户、同一天、同一 template_use_id，按入口 → Create → 创建成功关联；Create 和创建成功限定 source=feed。人次按日去重用户求和；链路次数统计配对成功的事件，各级不会超过前一级。素材填写和辅助 Use 事件不计入。</p>
+            <p class="reasonability">同一 template_use_id 如有多次事件，按时间序号一一配对，避免重复串联。</p>
+          </article>
+          <article class="card funnel-method-card">
+            <h3>作品结果漏斗</h3>
+            <div class="event-chain">新建 PID（a_create_chat_page_exp，task_status=creating，tr_src=template）→ Task 完成（任务表 status=2）→ a_content_preview_page_exp → 项目表 D0 首次公开发布</div>
+            <p>按新建 PID 去重。Task 完成取任务表 status=2，内容预览取该 PID 的预览事件；两者未强制校验时间先后。发布成功取项目表中的 D0 公开结果，不使用仅表示按钮点击的 p_post。template_create_success 没有可稳定归因的新作品 PID；Feed 场景携带的是原作品 PID。</p>
+            <p class="reasonability">路径表示业务阶段，不代表严格事件时序；新建 PID 缺少稳定的 template_use_id，暂不与点击漏斗拼接。</p>
+          </article>
+        </div>
+      </div>
+      <div class="feedback-summary-head trend-section-head"><div><h2>创作链路转化趋势</h2><p id="trendDescription">➕唤起创作页点击漏斗 · 每日逐级人次转化率</p></div><span class="hero-meta" data-range-copy></span></div>
+      <article class="card hero-card trend-card">
+        <div class="chart-legend legend-tabs" data-chart-legend="overviewChart">
+          <div class="funnel-unit-toggle trend-funnel-tabs" role="tablist" aria-label="趋势漏斗选择" data-trend-tabs="overviewChart">
+            <button class="active" type="button" role="tab" data-trend-group="plus" aria-selected="true">➕点击漏斗</button>
+            <button type="button" role="tab" data-trend-group="feed" aria-selected="false">Feed Template 漏斗</button>
+            <button type="button" role="tab" data-trend-group="result" aria-selected="false">作品结果漏斗</button>
+          </div>
+          <button class="legend-all active" type="button" aria-pressed="true">全部</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="0" data-overall-only="true" aria-pressed="true"><i style="--legend:#f18438"></i>列表曝光率</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="1" aria-pressed="true"><i style="--legend:#54c27a"></i>卡片点击率</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="2" aria-pressed="true"><i style="--legend:#3abdc4"></i>详情到达率</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="3" aria-pressed="true"><i style="--legend:#3498f5"></i>Use 率</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="4" aria-pressed="true"><i style="--legend:#9370df"></i>Create 率</button>
+          <button class="legend-series active" type="button" data-series-group="plus" data-series-index="10" aria-pressed="true"><i style="--legend:#b692e8"></i>创建成功率</button>
+          <button class="legend-series active" type="button" data-series-group="feed" data-series-index="5" aria-pressed="true" hidden><i style="--legend:#2caf83"></i>Create 率</button>
+          <button class="legend-series active" type="button" data-series-group="feed" data-series-index="6" aria-pressed="true" hidden><i style="--legend:#70d4b5"></i>创建成功率</button>
+          <button class="legend-series active" type="button" data-series-group="result" data-series-index="7" aria-pressed="true" hidden><i style="--legend:#5d43c9"></i>Task 完成率</button>
+          <button class="legend-series active" type="button" data-series-group="result" data-series-index="8" aria-pressed="true" hidden><i style="--legend:#7b68d6"></i>内容预览率</button>
+          <button class="legend-series active" type="button" data-series-group="result" data-series-index="9" aria-pressed="true" hidden><i style="--legend:#9a8bdd"></i>D0 公开发布率</button>
+        </div>
+        <div class="trend-template-scope" id="trendTemplateScope" role="tablist" aria-label="趋势模板选择"><button class="active" type="button" role="tab" data-trend-template="all" aria-selected="true">整体</button></div>
+        <div class="canvas-wrap"><canvas class="dashboard-chart" id="overviewChart" aria-label="所选时段创作链路转化趋势"></canvas></div>
+        <div class="chart-note" id="trendScopeNote">逐级人次转化率 = 当前环节每日去重用户数 ÷ 上一环节每日去重用户数。</div>
+      </article>
+    </section>
+
+    <section data-panel="usage" hidden>
+      <div class="feedback-summary-head"><div><h2>分模板使用转化</h2><p>模板中心与 Feed 分链统计；中心按详情分支、Feed 按 template_use_id 去重点击</p></div><span class="panel-data-status" data-panel-status="usage" data-state="loading">加载中</span></div>
+      <article class="card table-card">
+        <div class="table-wrap usage-table-wrap">
+          <table class="detail-table usage-table" data-progress-bars>
+            <thead>
+              <tr><th rowspan="2" class="usage-template-head"><div class="usage-template-head-inner"><div class="funnel-unit-toggle usage-unit-toggle" role="group" aria-label="分模板漏斗统计口径"><button class="active" type="button" data-usage-unit="user" aria-pressed="true">人次</button><button type="button" data-usage-unit="attempt" aria-pressed="false">有效点击</button></div><span>模板</span></div></th><th class="group-cover" colspan="3">模板封面 · 事件 PV</th><th class="group-center" colspan="5">模板中心 · <span id="usageCenterGroupLabel">按人次统计</span></th><th class="group-feed" colspan="5">Feed Template · <span id="usageFeedGroupLabel">按人次统计</span></th><th class="group-result" colspan="3">作品结果 · 去重 PID</th></tr>
+              <tr><th>曝光</th><th>点击</th><th>点击率</th><th id="usageDetailLabel">详情人次</th><th id="usageUseLabel">Use 人次</th><th>Use 率</th><th id="usageCenterCreateLabel">Create<br>人次</th><th>Use→Create</th><th id="usageFeedEntryLabel">入口人次</th><th id="usageFeedCreateLabel">Create<br>人次</th><th>入口→Create</th><th id="usageFeedSuccessLabel">成功人次</th><th>Create→成功</th><th>创建 PID</th><th>公开作品<br>发布率</th><th>私密作品<br>发布率</th></tr>
+            </thead>
+            <tbody id="usageBody">
+              <tr><td colspan="17"><div class="empty-state">数据加载中</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-note" id="usageMetricNote">口径：人次按同一天、同一模板、同一环节对 uid 去重后跨日求和；封面曝光与点击仍为去重 event_id 的事件 PV，创建 PID 与点击漏斗独立并按作品去重。</div>
+      </article>
+    </section>
+
+    <section data-panel="duration" hidden>
+      <article class="card hero-card">
+        <div class="hero-head"><div><h2>模板创作效率对比</h2><p>使用模板与不使用模板的创作过程指标对比</p></div><span class="panel-data-status" data-panel-status="duration" data-state="loading">加载中</span></div>
+        <div class="efficiency-grid">
+          <div class="efficiency-item">
+            <div class="label">平均 Task 生成时长</div>
+            <div class="compare-values"><div class="compare-col"><span>使用模板</span><strong id="durationTaskTemplate">268.68 秒</strong></div><div class="compare-col"><span>不使用模板</span><strong id="durationTaskNoTemplate">308.88 秒</strong></div></div>
+            <div class="compare-delta"><span>模板相对差异</span><strong id="durationTaskDelta">−40.19 秒 · −13.01%</strong></div>
+          </div>
+          <div class="efficiency-item">
+            <div class="label">平均对话轮次</div>
+            <div class="compare-values"><div class="compare-col"><span>使用模板</span><strong id="durationDialogueTemplate">1.37 轮/PID</strong></div><div class="compare-col"><span>不使用模板</span><strong id="durationDialogueNoTemplate">2.73 轮/PID</strong></div></div>
+            <div class="compare-delta"><span>模板相对差异</span><strong id="durationDialogueDelta">−1.36 轮 · −49.87%</strong></div>
+          </div>
+          <div class="efficiency-item">
+            <div class="label">平均预览时长</div>
+            <div class="compare-values"><div class="compare-col"><span>使用模板</span><strong id="durationPreviewTemplate">70.53 秒</strong></div><div class="compare-col"><span>不使用模板</span><strong id="durationPreviewNoTemplate">217.68 秒</strong></div></div>
+            <div class="compare-delta"><span>模板相对差异</span><strong id="durationPreviewDelta">−147.15 秒 · −67.60%</strong></div>
+          </div>
+        </div>
+        <div class="chart-note">统计口径：首个 Task 发起至首个完成响应；创建 PID 下去重 Task 数；预览总时长 / 有预览 PID。约 700 秒长耗时样例建议后续增加 P90 / P95。</div>
+      </article>
+      <div class="feedback-summary-head"><div><h2>分模板创作用时明细</h2><p>按实际创建 PID 汇总 Task、对话轮次与内容预览耗时</p></div><span class="source-badge real">真实数据</span></div>
+      <article class="card table-card">
+        <div class="table-wrap">
+          <table class="detail-table" data-progress-bars>
+            <thead><tr><th>模板</th><th>创建 PID</th><th>Task 完成 PID</th><th>有预览 PID</th><th>平均 Task 生成时长（秒）</th><th>平均对话轮次（轮/PID）</th><th>平均预览时长（秒/预览PID）</th></tr></thead>
+            <tbody id="durationBody">
+              <tr><td class="template-name-cell"><b>Gender Swap</b><small>ID · …2394</small></td><td>557</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Spot The Difference</b><small>ID · …3AE6</small></td><td>198</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Pick Me If You Can（旧版）</b><small>ID · …93DD</small></td><td>122</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Puzzle It</b><small>ID · …FFE4</small></td><td>103</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Photo Beat</b><small>ID · …8FCA</small></td><td>78</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Silhouette Snap</b><small>ID · …4FA8</small></td><td>50</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+              <tr><td class="template-name-cell"><b>Match &amp; Clear</b><small>ID · …E521</small></td><td>42</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section data-panel="feedback" hidden>
+      <div class="feedback-summary">
+        <div class="feedback-summary-head"><div><h2>全部模板作品反馈</h2><p>所选时段全部官方模板合计 · 创建自然日 D0 首次公开发布</p></div><span class="panel-data-status" data-panel-status="feedback" data-state="loading">加载中</span></div>
+        <div class="feedback-kpis">
+          <article class="card feedback-kpi"><div class="label">创建 PID</div><div class="value" id="feedbackCreated">—</div><div class="foot">全部官方模板创建作品</div></article>
+          <article class="card feedback-kpi"><div class="label">发布 PID</div><div class="value" id="feedbackPublished">520</div><div class="foot">公开发布 PID</div></article>
+          <article class="card feedback-kpi"><div class="label">公开作品发布率</div><div class="value" id="feedbackPublishRate">45.06<span class="unit">%</span></div><div class="foot">发布 PID / 创建 PID</div></article>
+          <article class="card feedback-kpi"><div class="label">私密作品发布率</div><div class="value" id="feedbackPrivateRate">0.78<span class="unit">%</span></div><div class="foot">私密发布 PID / 创建 PID</div></article>
+          <article class="card feedback-kpi"><div class="label">总 VV</div><div class="value" id="feedbackVv">30,508</div><div class="foot">首次发布自然日 D0</div></article>
+          <article class="card feedback-kpi"><div class="label">条均 VV</div><div class="value" id="feedbackAvgVv">58.67</div><div class="foot">总 VV / 发布 PID</div></article>
+          <article class="card feedback-kpi"><div class="label">单 VV 时长</div><div class="value" id="feedbackAvgVvDur">19.77<span class="unit">秒</span></div><div class="foot">总播放时长 / 总 VV</div></article>
+          <article class="card feedback-kpi"><div class="label">10s 率</div><div class="value" id="feedback10sRate">55.32<span class="unit">%</span></div><div class="foot">播放超过 10 秒次数 / 总 VV</div></article>
+        </div>
+      </div>
+      <div class="feedback-summary-head"><div><h2>分模板作品反馈明细</h2><p>首次发布自然日 D0 · Home Feed · 排除内部用户和作者本人互动</p></div><span class="source-badge real">真实数据</span></div>
+      <article class="card table-card">
+        <div class="table-wrap">
+          <table class="detail-table" data-progress-bars>
+            <thead><tr><th>模板</th><th>创建 PID</th><th>发布 PID</th><th>公开作品发布率</th><th>私密作品发布率</th><th>总 VV</th><th>条均 VV</th><th>单 VV 时长（秒）</th><th>10s 率</th><th>点赞率</th><th>收藏率</th><th>评论率</th><th>分享点击率</th></tr></thead>
+            <tbody id="feedbackBody">
+              <tr><td class="sticky-1 template-name-cell"><b>Gender Swap</b><small>ID · …2394</small></td><td>557</td><td>170</td><td>30.52%</td><td>1.44%</td><td>486</td><td>2.86</td><td>13.84</td><td>53.29%</td><td>1.65%</td><td>0.41%</td><td>0.41%</td><td>1.23%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Spot The Difference</b><small>ID · …3AE6</small></td><td>198</td><td>113</td><td>57.07%</td><td>0.51%</td><td>23,493</td><td class="positive">207.90</td><td>19.60</td><td class="positive">57.36%</td><td>0.62%</td><td>0.46%</td><td>0.08%</td><td>0.18%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Pick Me If You Can（旧版）</b><small>ID · …93DD</small></td><td>122</td><td>62</td><td>50.82%</td><td>0.00%</td><td>1,488</td><td>24.00</td><td>14.02</td><td>48.25%</td><td>1.48%</td><td>0.27%</td><td>0.67%</td><td>0.60%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Puzzle It</b><small>ID · …FFE4</small></td><td>103</td><td>71</td><td>68.93%</td><td>0.00%</td><td>2,989</td><td>42.10</td><td class="positive">28.81</td><td>50.79%</td><td>1.10%</td><td>1.07%</td><td>0.03%</td><td>0.07%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Photo Beat</b><small>ID · …8FCA</small></td><td>78</td><td>51</td><td>65.38%</td><td>0.00%</td><td>1,632</td><td>32.00</td><td>13.78</td><td>43.81%</td><td>0.74%</td><td>0.92%</td><td>0.18%</td><td>0.12%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Silhouette Snap</b><small>ID · …4FA8</small></td><td>50</td><td>29</td><td>58.00%</td><td>0.00%</td><td>116</td><td>4.00</td><td>13.11</td><td>43.10%</td><td>1.72%</td><td>0.86%</td><td>0.00%</td><td>0.86%</td></tr>
+              <tr><td class="sticky-1 template-name-cell"><b>Match &amp; Clear</b><small>ID · …E521</small></td><td>42</td><td>24</td><td>57.14%</td><td>0.00%</td><td>304</td><td>12.67</td><td>15.80</td><td>47.04%</td><td>0.99%</td><td class="positive">1.64%</td><td>0.00%</td><td>0.00%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <div class="feedback-trend-section">
+        <div class="feedback-summary-head trend-section-head"><div><h2>分模板作品反馈趋势</h2><p id="feedbackTrendDescription">条均 VV · 每日总 VV ÷ 每日公开发布 PID</p></div><span class="hero-meta" data-range-copy></span></div>
+        <article class="card hero-card trend-card">
+          <div class="chart-legend legend-tabs" id="feedbackTrendControls">
+            <div class="funnel-unit-toggle trend-funnel-tabs" role="tablist" aria-label="作品反馈趋势指标选择">
+              <button class="active" type="button" role="tab" data-feedback-metric="avg_vv" aria-selected="true">条均 VV</button>
+              <button type="button" role="tab" data-feedback-metric="interaction_rate" aria-selected="false">互动率</button>
+            </div>
+            <div class="feedback-template-legend" id="feedbackTrendTemplateLegend"></div>
+            <input class="feedback-template-search" id="feedbackTemplateSearch" type="search" placeholder="搜索模板" aria-label="搜索模板">
+            <details class="feedback-template-filter" id="feedbackTemplateFilter">
+              <summary id="feedbackTemplateFilterSummary">筛选模板</summary>
+              <div class="feedback-template-filter-menu" id="feedbackTemplateFilterMenu"></div>
+            </details>
+          </div>
+          <div class="canvas-wrap"><canvas class="dashboard-chart" id="feedbackTrendChart" aria-label="分模板作品反馈趋势"></canvas></div>
+          <div class="chart-note" id="feedbackTrendNote">条均 VV = 模板作品在首次公开发布自然日 D0 的总 VV ÷ 当日公开发布 PID。</div>
+        </article>
+      </div>
+    </section>
+
+    <section data-panel="share" hidden>
+      <div class="feedback-summary-head"><div><h2>全部模板站外分享</h2><p>D0 作者主动分享 · 六个分享按钮白名单 · 曝光与拉新随所选日期累计</p></div><span class="panel-data-status" data-panel-status="share" data-state="loading">加载中</span></div>
+      <div class="share-kpis">
+        <article class="card feedback-kpi"><div class="label">作者自分享次数</div><div class="value" id="shareTotal">—</div><div class="foot">全部模板作者主动分享次数</div></article>
+        <article class="card feedback-kpi"><div class="label">作者自分享 PID 数</div><div class="value" id="sharePid">—</div><div class="foot">发生过作者主动分享的作品数</div></article>
+        <article class="card feedback-kpi"><div class="label">作者自分享 PID 率</div><div class="value" id="sharePidRate">—</div><div class="foot">作者自分享 PID / 发布 PID</div></article>
+        <article class="card feedback-kpi"><div class="label">H5 曝光</div><div class="value" id="shareH5Exposure">—</div><div class="foot">分享 H5 页面曝光事件次数</div></article>
+        <article class="card feedback-kpi"><div class="label">App DeepLink 曝光</div><div class="value" id="shareAppExposure">—</div><div class="foot">App DeepLink 页面曝光事件次数</div></article>
+        <article class="card feedback-kpi"><div class="label">拉新人数</div><div class="value" id="shareNewUsers">—</div><div class="foot">game_share · PID 交叉验证作者本人分享</div></article>
+      </div>
+      <div class="channel-map" aria-label="分享渠道中文释义">
+        <div class="channel-item"><div><strong>系统分享</strong><span>share_via</span></div><b id="channelShareVia">—</b></div>
+        <div class="channel-item"><div><strong>复制链接</strong><span>copy_link</span></div><b id="channelCopyLink">—</b></div>
+        <div class="channel-item"><div><strong>分享到 X</strong><span>x</span></div><b id="channelX">—</b></div>
+        <div class="channel-item"><div><strong>分享到 TikTok</strong><span>tiktok</span></div><b id="channelTiktok">—</b></div>
+        <div class="channel-item"><div><strong>分享到 Instagram</strong><span>instagram</span></div><b id="channelInstagram">—</b></div>
+        <div class="channel-item"><div><strong>分享到“信息”</strong><span>messages</span></div><b id="channelMessages">—</b></div>
+      </div>
+      <div class="feedback-summary-head"><div><h2>分模板站外分享明细</h2><p>渠道拆分来自 p_share.button_name 分享按钮白名单；排除举报、删除、刷新、全屏等非分享按钮</p></div><span class="source-badge real">真实数据</span></div>
+      <article class="card table-card">
+        <div class="table-wrap">
+          <table class="detail-table share-table" data-progress-bars>
+            <thead><tr><th>模板</th><th>系统分享</th><th>复制链接</th><th>X</th><th>TikTok</th><th>Instagram</th><th>信息</th><th>作者自分享次数</th><th>作者自分享 PID 数</th><th>作者自分享 PID 率</th><th>H5 曝光</th><th>App DeepLink 曝光</th><th>站外曝光合计</th><th>拉新人数</th></tr></thead>
+            <tbody id="shareBody">
+              <tr><td class="template-name-cell"><b>Gender Swap</b><small>ID · …2394</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>13</td><td>8</td><td>4.71%</td></tr>
+              <tr><td class="template-name-cell"><b>Spot The Difference</b><small>ID · …3AE6</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>4</td><td>4</td><td>3.54%</td></tr>
+              <tr><td class="template-name-cell"><b>Pick Me If You Can（旧版）</b><small>ID · …93DD</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>3</td><td>2</td><td>3.23%</td></tr>
+              <tr><td class="template-name-cell"><b>Puzzle It</b><small>ID · …FFE4</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>13</td><td>9</td><td class="positive">12.68%</td></tr>
+              <tr><td class="template-name-cell"><b>Photo Beat</b><small>ID · …8FCA</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>3</td><td>3</td><td>5.88%</td></tr>
+              <tr><td class="template-name-cell"><b>Silhouette Snap</b><small>ID · …4FA8</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>0</td><td>0</td><td>0.00%</td></tr>
+              <tr><td class="template-name-cell"><b>Match &amp; Clear</b><small>ID · …E521</small></td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td class="pending">待接数</td><td>3</td><td>2</td><td>8.33%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <aside class="share-definition" aria-label="拉新人数口径说明"><strong>拉新人数口径</strong>统计通过作者本人分享的官方模板作品链接进入，并在当天完成注册的新用户，按 UID 去重。作品需为当天首发；iOS 使用 AppsFlyer 归因，Android 使用 GPIR 归因。</aside>
+    </section>
+
+    <section class="retention-panel" data-panel="retention" hidden>
+      <div class="feedback-summary-head"><div><h2>创作者 D1 活跃留存趋势</h2><p>D0 创建作品的作者中，D1 再次活跃的去重作者占比</p></div><span class="hero-meta" data-range-copy></span></div>
+      <article class="card hero-card">
+        <div class="chart-legend legend-tabs" data-chart-legend="retentionChart"><button class="legend-all active" type="button" aria-pressed="true">全部</button><button class="legend-series active" type="button" data-series-index="0" aria-pressed="true"><i style="--legend:#172033"></i>全部创作</button><button class="legend-series active" type="button" data-series-index="1" aria-pressed="true"><i style="--legend:#3498f5"></i>模板创作者</button><button class="legend-series active" type="button" data-series-index="2" aria-pressed="true"><i style="--legend:#f18438"></i>非模板创作者</button></div>
+        <div class="canvas-wrap"><canvas class="dashboard-chart" id="retentionChart" aria-label="所选时段创作者 D1 活跃留存趋势"></canvas></div>
+      </article>
+      <div class="feedback-summary-head"><div><h2>创作者 D1 创作留存趋势</h2><p>D0 创建作品的作者中，D1 再次完成创作的去重作者占比</p></div><span class="hero-meta" data-range-copy></span></div>
+      <article class="card hero-card">
+        <div class="chart-legend legend-tabs" data-chart-legend="creationRetentionChart"><button class="legend-all active" type="button" aria-pressed="true">全部</button><button class="legend-series active" type="button" data-series-index="0" aria-pressed="true"><i style="--legend:#172033"></i>全部创作</button><button class="legend-series active" type="button" data-series-index="1" aria-pressed="true"><i style="--legend:#3498f5"></i>模板创作者</button><button class="legend-series active" type="button" data-series-index="2" aria-pressed="true"><i style="--legend:#f18438"></i>非模板创作者</button></div>
+        <div class="canvas-wrap"><canvas class="dashboard-chart" id="creationRetentionChart" aria-label="所选时段创作者 D1 创作留存趋势"></canvas></div>
+      </article>
+      <div class="detail-label">结论边界与分析建议</div>
+      <div class="two-col">
+        <article class="card method-card">
+          <div class="section-head"><div><h2>结论边界</h2><p>当前只能描述相关性</p></div><span class="source-badge real">文档评论</span></div>
+          <div class="note">使用模板的用户可能本来就是站内高活用户，因此不能直接得出“模板提升留存”的因果结论。</div>
+          <ul class="method-list">
+            <li>按历史活跃天数、历史发布数和创作等级分层</li>
+            <li>匹配模板组与非模板组的前置活跃度</li>
+            <li>同时展示样本量、置信区间与模板组占比</li>
+            <li>模板组创作者人日目前约占整体 <span id="templateCreatorShare">7.3%</span></li>
+          </ul>
+        </article>
+        <article class="card method-card">
+          <div class="section-head"><div><h2>建议补充</h2><p>用于进一步提升因果解释力</p></div></div>
+          <ul class="method-list"><li>每日样本量与置信区间</li><li>历史活跃度分层后的留存差异</li><li>模板创作者占全部创作者的比例</li><li>新老创作者分别对比</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section data-panel="acquisition" hidden>
+      <div class="acquisition-head">
+        <div><h2>投放渠道新用户后续链路</h2><p>统计最终归因计划匹配 template01—template12 的注册新用户；按 register_media_source 拆渠道，行为指标从注册日 D0 开始</p></div>
+        <span class="acquisition-range" id="acquisitionRange">当前筛选 · 8月14日起</span>
+      </div>
+      <div class="acquisition-filters" id="acquisitionChannelFilters"><span>查看渠道</span></div>
+
+      <div class="acquisition-section">
+        <div class="feedback-summary-head"><div><h2>投放命中率 · 按渠道拆分</h2><p>分母均为该渠道当日新增用户；首两个浏览按 D0 Home Feed 首两个不同作品计算，模板作品取项目表 is_template=1</p></div><span class="panel-data-status" id="acquisitionStatus" data-state="loading">加载中</span></div>
+        <article class="card table-card">
+          <div class="table-wrap"><table class="detail-table acquisition-table">
+            <thead><tr><th>投放渠道</th><th>新增用户</th><th>到达 Feed</th><th>首个浏览为模板</th><th>前两个浏览均为模板</th><th>点“+”后弹窗<br>占全部新用户</th><th>点“+”后弹窗<br>占点击“+”用户</th></tr></thead>
+            <tbody id="acquisitionHitBody"><tr><td colspan="7"><div class="empty-state">数据加载中</div></td></tr></tbody>
+          </table></div>
+          <div class="chart-note">模板命中率均以渠道新增用户为分母；弹窗同时展示“命中用户 ÷ 全部新用户”和“命中用户 ÷ 点击‘+’用户”。弹窗曝光时间须不早于该用户 D0 首次“+”点击。</div>
+        </article>
+      </div>
+
+      <div class="acquisition-section">
+        <div class="feedback-summary-head"><div><h2>新增模板入口链路漏斗</h2><p id="acquisitionFunnelScope">全部投放渠道 · D0 去重用户严格逐级关联</p></div><div class="funnel-unit-toggle" role="group" aria-label="投放漏斗统计口径"><button class="active" type="button" data-acquisition-funnel-unit="user_count" aria-pressed="true">人次</button><button type="button" data-acquisition-funnel-unit="object_count" aria-pressed="false">链路次数</button></div></div>
+        <div class="funnel-grid acquisition-funnel-grid">
+          <article class="card funnel-card">
+            <div class="funnel-card-head"><div><h2>Feed 固排模板入口</h2><p>固排模板素材输入 → Create → 创建成功</p></div><span class="source-badge real">onboarding_feed</span></div>
+            <div class="funnel-stack" id="acquisitionFeedFunnel"><div class="funnel-empty">数据加载中</div></div>
+            <div class="chain-note">固排曝光没有专属 source，因此从首个可精确识别的 a_template_use_input(source=onboarding_feed) 起算；下游按同一 template_use_id 串联。</div>
+          </article>
+          <article class="card funnel-card">
+            <div class="funnel-card-head"><div><h2>Create 弹窗模板入口</h2><p>“+”点击 → 弹窗曝光 → 模板点击 → 素材输入 → Create → 创建成功</p></div><span class="source-badge real">onboarding_template_wnd</span></div>
+            <div class="funnel-stack" id="acquisitionPopupFunnel"><div class="funnel-empty">数据加载中</div></div>
+            <div class="chain-note">弹窗分支与原模板中心入口分开；当前仅展示 use_template 正向分支。“+”点击、弹窗曝光和模板点击按同一 td_track_sid 严格串联；拿到 template_use_id 后再串联素材输入、Create 与创建成功。</div>
+          </article>
+          <article class="card funnel-card">
+            <div class="funnel-card-head"><div><h2>作品结果漏斗</h2><p>投放新用户 D0 创建作品的去重 PID 结果</p></div><span class="source-badge real">作品 PID</span></div>
+            <div class="funnel-stack" id="acquisitionResultFunnel"><div class="funnel-empty">数据加载中</div></div>
+            <div class="chain-note">按投放新用户注册日创建的实际 PID 展示。Task 完成取任务表 status=2，内容预览取预览曝光，发布成功取注册日首次公开发布；当前不与左侧入口点击强行归因。</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="acquisition-section">
+        <div class="feedback-summary-head"><div><h2>D0 消费行为</h2><p>沿用现有看板 Home Feed 消费口径</p></div><span class="hero-meta" id="acquisitionBehaviorScope">全部投放渠道</span></div>
+        <div class="acquisition-metrics" id="acquisitionConsumptionMetrics"></div>
+      </div>
+      <div class="acquisition-section">
+        <div class="feedback-summary-head"><div><h2>D0 创作行为</h2><p>排除复制作品；公开发布要求作品在注册日首次发布</p></div></div>
+        <div class="acquisition-metrics" id="acquisitionCreationMetrics"></div>
+      </div>
+      <div class="acquisition-section">
+        <div class="feedback-summary-head"><div><h2>新用户活跃留存</h2><p>按注册 cohort 计算；观察日未完整时显示待回收，不按 0 处理</p></div><span class="source-badge real">D1 / 3 / 7 / 14 / 30</span></div>
+        <div class="retention-card-grid" id="acquisitionRetentionMetrics"></div>
+      </div>
+      <aside class="share-definition"><strong>独立日期口径</strong>本 Tab 可从 8月14日起独立筛选日期；所选范围只作用于投放渠道数据，不影响其他 Tab。</aside>
+    </section>
+
   </main>
-</body>
+
+  <script src="data/dashboard.js"></script>
+  <script>
+    const dayMs = 86400000;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let maxDate = new Date(today.getTime() - dayMs);
+    let minDate = new Date(maxDate.getTime() - 29 * dayMs);
+    let selectedStart = new Date(maxDate.getTime() - 6 * dayMs);
+    let selectedEnd = new Date(maxDate);
+    let primaryDateState = { min: new Date(minDate), max: new Date(maxDate), start: new Date(selectedStart), end: new Date(selectedEnd) };
+    let acquisitionDateState = { min: new Date(2026, 7, 14), max: new Date(maxDate), start: new Date(2026, 7, 14), end: new Date(maxDate) };
+    let activeTab = "overview";
+    let dashboardData = null;
+    let dataLoadState = "loading";
+    let latestDataDate = null;
+    let earliestDataDate = null;
+    let clickFunnelField = "user_count";
+    let usageFunnelUnit = "user";
+    let selectedTrendTemplateId = "all";
+    let selectedTrendTemplateName = "整体";
+    let selectedFeedbackTrendMetric = "avg_vv";
+    const selectedFeedbackTrendTemplateIds = new Set();
+    const feedbackTrendSeriesVisibility = { all_creation: true, template_total: true };
+    let selectedAcquisitionChannel = "all";
+    let acquisitionFunnelField = "user_count";
+
+    const pad = (value) => String(value).padStart(2, "0");
+    const iso = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    const cnDate = (date) => `${date.getMonth() + 1}月${date.getDate()}日`;
+    const appliedRangeLabel = (start, end) => {
+      if (start.getFullYear() === end.getFullYear()) return `${cnDate(start)} — ${cnDate(end)}`;
+      return `${start.getFullYear()}年${cnDate(start)} — ${end.getFullYear()}年${cnDate(end)}`;
+    };
+    const parseDate = (value) => new Date(`${value}T00:00:00`);
+    const moduleStateLabel = (state) => ({
+      loading: "加载中",
+      partial: "数据不完整",
+      empty: "暂无数据",
+      error: "加载失败"
+    }[state] || state);
+
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+    const rangeSelect = document.getElementById("rangeSelect");
+    const rangeTrigger = document.getElementById("rangeTrigger");
+    const rangePopover = document.getElementById("rangePopover");
+    const dateSummary = document.getElementById("dateSummary");
+    const dataStatus = document.getElementById("dataStatus");
+    const rangeMessage = document.getElementById("rangeMessage");
+    function saveCurrentDateState(tab = activeTab) {
+      const state = tab === "acquisition" ? acquisitionDateState : primaryDateState;
+      state.min = new Date(minDate);
+      state.max = new Date(maxDate);
+      state.start = new Date(selectedStart);
+      state.end = new Date(selectedEnd);
+    }
+    function loadDateState(tab = activeTab) {
+      const state = tab === "acquisition" ? acquisitionDateState : primaryDateState;
+      minDate = new Date(state.min);
+      maxDate = new Date(state.max);
+      selectedStart = new Date(state.start);
+      selectedEnd = new Date(state.end);
+      [startInput, endInput].forEach((input) => {
+        input.min = iso(minDate);
+        input.max = iso(maxDate);
+      });
+    }
+    [startInput, endInput].forEach((input) => {
+      input.min = iso(minDate);
+      input.max = iso(maxDate);
+    });
+    startInput.value = iso(selectedStart);
+    endInput.value = iso(selectedEnd);
+
+    function updateRangeUI() {
+      const days = Math.round((selectedEnd - selectedStart) / dayMs) + 1;
+      const text = `${cnDate(selectedStart)} — ${cnDate(selectedEnd)} · ${days}天`;
+      dateSummary.textContent = activeTab === "acquisition" ? `可选 8月14日起｜当前：${text}` : `可选近 30 天｜当前：${text}`;
+      if (dashboardData && earliestDataDate && latestDataDate) {
+        const actualDates = allActualDateKeys();
+        const currentInfo = tabDateInfo(activeTab);
+        let moduleStatus = "";
+        if (activeTab === "retention" && currentInfo.pendingKeys.length) {
+          moduleStatus = ` · D1 数据截至 ${formatDateKey(currentInfo.cutoff)} · ${currentInfo.pendingKeys.map(formatDateKey).join("、")}待回收`;
+        } else if (currentInfo.state !== "complete") {
+          moduleStatus = ` · 当前模块：${moduleStateLabel(currentInfo.state)}`;
+        }
+        dataStatus.textContent = `真实数据范围 · ${cnDate(earliestDataDate)} — ${cnDate(latestDataDate)} · 共${actualDates.length}个数据日${moduleStatus}`;
+      } else {
+        dataStatus.textContent = dataLoadState === "error" ? "数据加载失败" : (dashboardData ? "暂无可用数据" : "数据加载中");
+      }
+      const appliedRange = appliedRangeLabel(selectedStart, selectedEnd);
+      rangeTrigger.textContent = appliedRange;
+      rangeTrigger.title = `当前日期范围：${appliedRange}`;
+      rangeTrigger.setAttribute("aria-label", `当前日期范围：${appliedRange}`);
+      document.querySelectorAll("[data-range-copy]").forEach((node) => {
+        const tab = node.closest("[data-panel]")?.dataset.panel || activeTab;
+        node.textContent = actualRangeText(tab);
+      });
+      updatePanelStatuses();
+      startInput.value = iso(selectedStart);
+      endInput.value = iso(selectedEnd);
+      if (dashboardData) renderDashboard();
+    }
+
+    rangeTrigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      rangePopover.hidden = !rangePopover.hidden;
+      rangeTrigger.setAttribute("aria-expanded", String(!rangePopover.hidden));
+    });
+
+    rangeSelect.addEventListener("change", () => {
+      rangeMessage.textContent = "";
+      if (rangeSelect.value === "custom") return;
+      const pendingEnd = new Date(maxDate);
+      const pendingStart = rangeSelect.value === "yesterday" ? new Date(maxDate) : new Date(maxDate.getTime() - 6 * dayMs);
+      startInput.value = iso(pendingStart);
+      endInput.value = iso(pendingEnd);
+      selectedStart = pendingStart;
+      selectedEnd = pendingEnd;
+      updateRangeUI();
+      rangePopover.hidden = true;
+      rangeTrigger.setAttribute("aria-expanded", "false");
+    });
+
+    document.getElementById("applyRange").addEventListener("click", () => {
+      const start = parseDate(startInput.value);
+      const end = parseDate(endInput.value);
+      const days = Math.round((end - start) / dayMs) + 1;
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+        rangeMessage.textContent = "请选择完整的开始与结束日期。";
+        return;
+      }
+      if (start > end) {
+        rangeMessage.textContent = "开始日期不能晚于结束日期。";
+        return;
+      }
+      if (start < minDate || end > maxDate || days > 30) {
+        rangeMessage.textContent = "自定义日期必须位于实际数据范围内，且最多选择 30 天。";
+        return;
+      }
+      rangeMessage.textContent = "";
+      selectedStart = start;
+      selectedEnd = end;
+      rangeSelect.value = "custom";
+      updateRangeUI();
+      rangePopover.hidden = true;
+      rangeTrigger.setAttribute("aria-expanded", "false");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".date-popover-wrap")) {
+        rangePopover.hidden = true;
+        rangeTrigger.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    const tabs = [...document.querySelectorAll("[data-tab]")];
+    const panels = [...document.querySelectorAll("[data-panel]")];
+    tabs.forEach((button) => {
+      button.addEventListener("click", () => {
+        saveCurrentDateState(activeTab);
+        activeTab = button.dataset.tab;
+        loadDateState(activeTab);
+        tabs.forEach((tab) => {
+          const selected = tab === button;
+          tab.classList.toggle("active", selected);
+          tab.setAttribute("aria-selected", String(selected));
+        });
+        panels.forEach((panel) => { panel.hidden = panel.dataset.panel !== activeTab; });
+        document.querySelector(".date-control")?.classList.toggle("independent-range", activeTab === "acquisition");
+        if (activeTab === "acquisition") {
+          rangeTrigger.disabled = false;
+          rangeMessage.textContent = "投放渠道数据从 8月14日起；此处日期筛选仅作用于当前 Tab。";
+        } else {
+          rangeTrigger.disabled = false;
+          rangeMessage.textContent = "";
+        }
+        updateRangeUI();
+        requestAnimationFrame(drawAllCharts);
+        scheduleOverallSticky();
+      });
+    });
+
+    const funnelUnitButtons = [...document.querySelectorAll("[data-funnel-unit]")];
+    function updateFunnelUnitUI() {
+      const isUser = clickFunnelField === "user_count";
+      funnelUnitButtons.forEach((button) => {
+        const selected = button.dataset.funnelUnit === clickFunnelField;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
+      document.getElementById("centerUnitBadge").textContent = isUser ? "样例数量" : "链路次数";
+      document.getElementById("feedUnitBadge").textContent = isUser ? "样例数量" : "链路次数";
+      document.getElementById("kpiCenterEntryLabel").textContent = isUser ? "➕入口人次" : "➕入口链路次数";
+      document.getElementById("kpiFeedEntryLabel").textContent = isUser ? "Feed Template 入口人次" : "Feed Template 入口链路次数";
+      document.getElementById("centerBehaviorNote").hidden = isUser;
+    }
+    funnelUnitButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        clickFunnelField = button.dataset.funnelUnit;
+        updateFunnelUnitUI();
+        if (dashboardData) renderDashboard();
+      });
+    });
+    updateFunnelUnitUI();
+
+    const acquisitionFunnelUnitButtons = [...document.querySelectorAll("[data-acquisition-funnel-unit]")];
+    function updateAcquisitionFunnelUnitUI() {
+      acquisitionFunnelUnitButtons.forEach((button) => {
+        const selected = button.dataset.acquisitionFunnelUnit === acquisitionFunnelField;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
+    }
+    acquisitionFunnelUnitButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        acquisitionFunnelField = button.dataset.acquisitionFunnelUnit;
+        updateAcquisitionFunnelUnitUI();
+        if (dashboardData) renderAcquisition();
+      });
+    });
+    updateAcquisitionFunnelUnitUI();
+
+    const usageUnitButtons = () => [...document.querySelectorAll("[data-usage-unit]")];
+    function updateUsageUnitUI() {
+      const isUser = usageFunnelUnit === "user";
+      usageUnitButtons().forEach((button) => {
+        const selected = button.dataset.usageUnit === usageFunnelUnit;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
+      document.getElementById("usageCenterGroupLabel").textContent = isUser ? "按人次统计" : "按有效点击统计";
+      document.getElementById("usageFeedGroupLabel").textContent = isUser ? "按人次统计" : "按有效点击统计";
+      document.getElementById("usageDetailLabel").textContent = isUser ? "详情人次" : "详情到达";
+      document.getElementById("usageUseLabel").textContent = isUser ? "Use 人次" : "Use 点击";
+      document.getElementById("usageCenterCreateLabel").innerHTML = isUser ? "Create<br>人次" : "首次点击<br>Create";
+      document.getElementById("usageFeedEntryLabel").textContent = isUser ? "入口人次" : "入口点击";
+      document.getElementById("usageFeedCreateLabel").innerHTML = isUser ? "Create<br>人次" : "首次点击<br>Create";
+      document.getElementById("usageFeedSuccessLabel").textContent = isUser ? "成功人次" : "创建成功";
+      document.getElementById("usageMetricNote").textContent = isUser
+        ? "口径：人次按同一天、同一模板、同一环节对 uid 去重后跨日求和；封面曝光与点击仍为去重 event_id 的事件 PV，创建 PID 与点击漏斗独立并按作品去重。"
+        : "口径：封面曝光与点击为去重 event_id 的事件 PV；模板中心按 dt + uid + tl_sid + template_id 识别详情到达，每个分支只取首次 Use 点击，并按同一 template_use_id 取 Use 后首次 source=template 的 Create 点击；Feed 按同一用户、同一天、同一 template_use_id 依次取入口点击、首次 Create 点击与首次创建成功。创建 PID 独立按作品去重。";
+    }
+    usageUnitButtons().forEach((button) => {
+      button.addEventListener("click", () => {
+        usageFunnelUnit = button.dataset.usageUnit;
+        updateUsageUnitUI();
+        if (dashboardData) renderDashboard();
+      });
+    });
+    updateUsageUnitUI();
+
+    function addTableProgressBars(table) {
+      const body = table.tBodies[0];
+      const headerRow = table.tHead?.rows[0];
+      if (!body || !headerRow) return;
+      const rows = [...body.rows].filter((row) => row.dataset.progressExclude !== "true");
+      // Grouped headers use colspan, so the first header row has fewer DOM
+      // cells than the rendered data columns. Drive progress bars from the
+      // widest body row to cover every metric column.
+      const columnCount = Math.max(headerRow.cells.length, ...rows.map((row) => row.cells.length));
+      for (let column = 1; column < columnCount; column += 1) {
+        const entries = rows.map((row) => {
+          const cell = row.cells[column];
+          // A supplement may add headers before its placeholder rows are rebuilt.
+          // Ignore that missing cell so one tab can never stop the whole dashboard.
+          if (!cell) return null;
+          const raw = cell.textContent.trim();
+          const valid = !cell.classList.contains("pending") && /^-?[\d,]+(?:\.\d+)?%?$/.test(raw);
+          return valid ? { cell, raw, value: Number(raw.replace(/[% ,]/g, "")) } : null;
+        }).filter(Boolean);
+        if (!entries.length) continue;
+        const max = Math.max(...entries.map((entry) => entry.value));
+        if (max <= 0) continue;
+        entries.forEach((entry) => {
+          const progress = entry.value === 0 ? 0 : Math.max(5, entry.value / max * 100);
+          const bar = document.createElement("div");
+          const value = document.createElement("span");
+          bar.className = "cell-progress";
+          bar.style.setProperty("--progress", `${progress.toFixed(1)}%`);
+          value.textContent = entry.raw;
+          bar.append(value);
+          bar.title = `该列相对进度 ${progress.toFixed(1)}%`;
+          entry.cell.classList.remove("positive", "negative");
+          entry.cell.replaceChildren(bar);
+        });
+      }
+    }
+    function refreshTableProgressBars() {
+      document.querySelectorAll("table[data-progress-bars]").forEach((table) => {
+        try {
+          addTableProgressBars(table);
+        } catch (error) {
+          // Keep table decoration isolated from data loading and other tabs.
+          console.warn("表格进度条渲染失败，已跳过当前表格", error);
+        }
+      });
+    }
+    refreshTableProgressBars();
+
+    let overallStickyPortal = null;
+    let overallStickyFrame = 0;
+    function getOverallStickyPortal() {
+      if (overallStickyPortal) return overallStickyPortal;
+      overallStickyPortal = document.createElement("div");
+      overallStickyPortal.className = "overall-sticky-portal";
+      overallStickyPortal.setAttribute("aria-label", "吸附表头");
+      overallStickyPortal.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-usage-unit]");
+        if (!button) return;
+        usageFunnelUnit = button.dataset.usageUnit;
+        updateUsageUnitUI();
+        if (dashboardData) renderDashboard();
+      });
+      document.body.append(overallStickyPortal);
+      return overallStickyPortal;
+    }
+    function updateOverallSticky() {
+      overallStickyFrame = 0;
+      const sourceTable = document.querySelector('[data-panel]:not([hidden]) .detail-table');
+      const portal = getOverallStickyPortal();
+      if (!sourceTable) {
+        portal.style.display = "none";
+        return;
+      }
+      const sourceRow = sourceTable.querySelector("tbody .overall-row");
+      const widthSourceRow = sourceRow || sourceTable.tBodies[0]?.rows[0];
+      const tableWrap = sourceTable.closest(".table-wrap");
+      const sourceHead = sourceTable.tHead;
+      const rowRect = sourceRow?.getBoundingClientRect();
+      const headRect = sourceHead.getBoundingClientRect();
+      const tableRect = sourceTable.getBoundingClientRect();
+      const wrapRect = tableWrap.getBoundingClientRect();
+      const stickyHeight = headRect.height + (rowRect?.height || 0);
+      if (!widthSourceRow || headRect.top >= 0 || tableRect.bottom <= 0 || wrapRect.width <= 0) {
+        portal.style.display = "none";
+        return;
+      }
+
+      const floatingTable = sourceTable.cloneNode(false);
+      floatingTable.removeAttribute("data-progress-bars");
+      floatingTable.removeAttribute("id");
+      floatingTable.style.width = `${tableRect.width}px`;
+      floatingTable.style.minWidth = `${tableRect.width}px`;
+      floatingTable.style.transform = `translateX(${tableRect.left - wrapRect.left}px)`;
+      const colgroup = document.createElement("colgroup");
+      [...widthSourceRow.cells].forEach((cell) => {
+        const col = document.createElement("col");
+        col.style.width = `${cell.getBoundingClientRect().width}px`;
+        colgroup.append(col);
+      });
+      const floatingHead = sourceHead.cloneNode(true);
+      floatingTable.append(colgroup, floatingHead);
+      if (sourceRow) {
+        const body = document.createElement("tbody");
+        const floatingRow = sourceRow.cloneNode(true);
+        floatingRow.removeAttribute("id");
+        body.append(floatingRow);
+        floatingTable.append(body);
+      }
+      portal.replaceChildren(floatingTable);
+      portal.style.left = `${wrapRect.left}px`;
+      portal.style.width = `${wrapRect.width}px`;
+      portal.style.top = `${Math.min(0, tableRect.bottom - stickyHeight)}px`;
+      portal.style.height = `${stickyHeight}px`;
+      portal.style.display = "block";
+    }
+    function scheduleOverallSticky() {
+      if (overallStickyFrame) return;
+      overallStickyFrame = requestAnimationFrame(updateOverallSticky);
+    }
+    document.addEventListener("scroll", scheduleOverallSticky, true);
+    window.addEventListener("resize", scheduleOverallSticky);
+
+    const numberFields = ["cover_exp_count","cover_clk_count","detail_exp_count","matched_use_clk_count","create_clk_count","feed_entry_count","feed_create_clk_count","feed_create_success_count","created_pid","task_completed_pid","preview_pid","published_pid","private_published_pid","vv","dur_sec","dur_gt_10s_cnt","like_cnt","favorite_cnt","comment_cnt","share_click_cnt","share_via_cnt","copy_link_cnt","x_cnt","tiktok_cnt","instagram_cnt","messages_cnt","author_self_share_cnt","author_self_shared_pid","h5_share_page_exposure_cnt","app_deeplink_page_exposure_cnt","total_external_exposure_cnt","new_user_acquisition_cnt"];
+    const shareSupplementFields = ["h5_share_page_exposure_cnt","app_deeplink_page_exposure_cnt","total_external_exposure_cnt","new_user_acquisition_cnt"];
+    const hasShareSupplement = (row) => shareSupplementFields.every((field) => Object.prototype.hasOwnProperty.call(row, field));
+    const fmt = (value, digits = 0) => value == null || Number.isNaN(value) ? "—" : Number(value).toLocaleString("zh-CN", { maximumFractionDigits: digits, minimumFractionDigits: digits });
+    const ratio = (num, den) => den ? `${(num / den * 100).toFixed(2)}%` : "—";
+    const ymdKey = (date) => iso(date).replaceAll("-", "");
+    const inRange = (row) => row.dt >= ymdKey(selectedStart) && row.dt <= ymdKey(selectedEnd);
+    const selectedDateKeys = () => {
+      const keys = [];
+      for (let cursor = new Date(selectedStart); cursor <= selectedEnd; cursor = new Date(cursor.getTime() + dayMs)) keys.push(ymdKey(cursor));
+      return keys;
+    };
+    const hasDateCoverage = (rows) => {
+      const available = new Set(rows.map((row) => String(row.dt || "")));
+      return selectedDateKeys().every((key) => available.has(key));
+    };
+    const dateKeys = (rows, predicate = () => true) => [...new Set(rows.filter(predicate).map((row) => String(row.dt || "")).filter((value) => /^\d{8}$/.test(value)))].sort();
+    const allActualDateKeys = () => dateKeys([
+      ...(dashboardData?.chain_daily || []),
+      ...(dashboardData?.usage_daily || []),
+      ...(dashboardData?.template_daily || []),
+      ...(dashboardData?.comparison_daily || [])
+    ]);
+    const rowsForTab = (tab) => {
+      if (!dashboardData) return [];
+      if (tab === "usage") return [...(dashboardData.usage_daily || []), ...(dashboardData.template_daily || [])];
+      if (["feedback", "share"].includes(tab)) return dashboardData.template_daily || [];
+      if (tab === "retention") return (dashboardData.comparison_daily || []).filter((row) => row.d1_retention_rate != null || row.d1_creation_retention_rate != null);
+      if (tab === "duration") return [...(dashboardData.template_daily || []), ...(dashboardData.comparison_daily || [])];
+      return dashboardData.chain_daily || [];
+    };
+    const stateName = (state) => ({ loading: "加载中", complete: "完整", partial: "部分数据", empty: "无数据", error: "加载失败" }[state] || state);
+    function tabDateInfo(tab) {
+      if (dataLoadState === "error") return { state: "error", completeKeys: [], pendingKeys: [], cutoff: null };
+      if (!dashboardData) return { state: "loading", completeKeys: [], pendingKeys: [], cutoff: null };
+      const expected = selectedDateKeys();
+      const chain = dashboardData.chain_daily || [];
+      const usage = dashboardData.usage_daily || [];
+      const template = dashboardData.template_daily || [];
+      const comparison = dashboardData.comparison_daily || [];
+      const share = dashboardData.share_daily || [];
+      const hasRows = (rows, key) => rows.some((row) => String(row.dt) === key);
+      const retentionComplete = (key) => {
+        const dayRows = comparison.filter((row) => String(row.dt) === key && row.d1_retention_rate != null && row.d1_creation_retention_rate != null);
+        return dayRows.some((row) => row.content_group === "template") && dayRows.some((row) => row.content_group === "no_template");
+      };
+      const completeForDate = (key) => {
+        if (tab === "share") {
+          // share_daily is an isolated supplement and only contains templates
+          // that actually produced an exposure or acquisition row. Templates
+          // with zero values are legitimately absent, so completeness is
+          // determined at the date level instead of requiring every template
+          // row to carry the supplement fields.
+          return hasRows(template, key) && hasRows(share, key);
+        }
+        if (tab === "usage") return hasRows(usage, key) && hasRows(template, key);
+        if (tab === "feedback") return hasRows(template, key);
+        if (tab === "duration") return hasRows(template, key) && hasRows(comparison, key);
+        if (tab === "retention") return retentionComplete(key);
+        return hasRows(chain, key);
+      };
+      const anyForDate = (key) => {
+        if (tab === "usage") return hasRows(usage, key) || hasRows(template, key);
+        if (["feedback", "share"].includes(tab)) return hasRows(template, key);
+        if (tab === "duration") return hasRows(template, key) || hasRows(comparison, key);
+        if (tab === "retention") return hasRows(comparison, key);
+        return hasRows(chain, key);
+      };
+      const completeKeys = expected.filter(completeForDate);
+      const pendingKeys = tab === "retention" ? expected.filter((key) => hasRows(comparison, key) && !retentionComplete(key)) : [];
+      const anyKeys = expected.filter(anyForDate);
+      const state = completeKeys.length === expected.length ? "complete" : (completeKeys.length || pendingKeys.length || anyKeys.length ? "partial" : "empty");
+      return { state, completeKeys, pendingKeys, cutoff: completeKeys.at(-1) || null };
+    }
+    const datasetCompleteForTab = (tab) => tabDateInfo(tab).state === "complete";
+    function formatDateKey(key) {
+      if (!key) return "";
+      return `${Number(key.slice(4,6))}月${Number(key.slice(6,8))}日`;
+    }
+    function updatePanelStatuses() {
+      document.querySelectorAll("[data-panel-status]").forEach((node) => {
+        const info = tabDateInfo(node.dataset.panelStatus);
+        node.dataset.state = info.state;
+        let text = stateName(info.state);
+        if (info.cutoff) text += ` · 数据截至 ${formatDateKey(info.cutoff)}`;
+        if (node.dataset.panelStatus === "retention" && info.pendingKeys.length) {
+          text += ` · ${info.pendingKeys.map(formatDateKey).join("、")}待回收`;
+        }
+        node.textContent = text;
+      });
+    }
+    const actualRangeText = (tab) => {
+      const available = tabDateInfo(tab).completeKeys;
+      if (!available.length) return "所选时段无可用数据";
+      const first = parseDate(`${available[0].slice(0,4)}-${available[0].slice(4,6)}-${available[0].slice(6,8)}`);
+      const lastKey = available[available.length - 1];
+      const last = parseDate(`${lastKey.slice(0,4)}-${lastKey.slice(4,6)}-${lastKey.slice(6,8)}`);
+      const selectedCount = selectedDateKeys().length;
+      const suffix = available.length === selectedCount ? "" : ` · 可用${available.length}/${selectedCount}天`;
+      return `${cnDate(first)} — ${cnDate(last)} · ${available.length}天${suffix}`;
+    };
+    const sum = (rows, field) => rows.reduce((total, row) => total + Number(row[field] || 0), 0);
+    const shortId = (id) => id ? `ID · …${String(id).slice(-4).toUpperCase()}` : "";
+    const templateNameOverrides = new Map();
+    const displayTemplateName = (templateId, templateName) => templateNameOverrides.get(String(templateId || "")) || templateName || "模板未知";
+    const setMetric = (id, value, unit = "") => {
+      const node = document.getElementById(id);
+      if (!node) return;
+      node.textContent = value;
+      if (unit) {
+        const unitNode = document.createElement("span");
+        unitNode.className = "unit";
+        unitNode.textContent = unit;
+        node.append(unitNode);
+      }
+    };
+    const weightedAverage = (rows, group, valueField, weightField) => {
+      const scoped = rows.filter((row) => row.content_group === group && row[valueField] != null && Number.isFinite(Number(row[valueField])));
+      const weight = sum(scoped, weightField);
+      return weight ? scoped.reduce((total, row) => total + Number(row[valueField] || 0) * Number(row[weightField] || 0), 0) / weight : null;
+    };
+    const setComparisonMetric = (templateId, noTemplateId, deltaId, templateValue, noTemplateValue, unit, suffix = "") => {
+      document.getElementById(templateId).textContent = templateValue == null ? "—" : `${fmt(templateValue, 2)} ${unit}${suffix}`;
+      document.getElementById(noTemplateId).textContent = noTemplateValue == null ? "—" : `${fmt(noTemplateValue, 2)} ${unit}${suffix}`;
+      const deltaNode = document.getElementById(deltaId);
+      if (templateValue == null || noTemplateValue == null) {
+        deltaNode.textContent = "—";
+        return;
+      }
+      const delta = templateValue - noTemplateValue;
+      const relative = noTemplateValue ? delta / noTemplateValue * 100 : null;
+      const sign = delta < 0 ? "−" : "+";
+      const relativeSign = relative < 0 ? "−" : "+";
+      deltaNode.textContent = `${sign}${fmt(Math.abs(delta), 2)} ${unit} · ${relativeSign}${fmt(Math.abs(relative), 2)}%`;
+    };
+
+    function aggregateTemplates(rows) {
+      const grouped = new Map();
+      rows.forEach((row) => {
+        const key = row.template_id;
+        if (!grouped.has(key)) grouped.set(key, { template_id: key, template_name: displayTemplateName(key, row.template_name) });
+        const target = grouped.get(key);
+        numberFields.forEach((field) => { target[field] = Number(target[field] || 0) + Number(row[field] || 0); });
+        target.taskDurWeighted = Number(target.taskDurWeighted || 0) + Number(row.avg_task_generation_dur_sec || 0) * Number(row.task_completed_pid || 0);
+        target.dialogueWeighted = Number(target.dialogueWeighted || 0) + Number(row.avg_dialogue_rounds_per_pid || 0) * Number(row.created_pid || 0);
+        target.previewDurWeighted = Number(target.previewDurWeighted || 0) + Number(row.avg_preview_dur_sec_per_preview_pid || 0) * Number(row.preview_pid || 0);
+      });
+      return [...grouped.values()].map((row) => ({
+        ...row,
+        avg_task_generation_dur_sec: row.task_completed_pid ? row.taskDurWeighted / row.task_completed_pid : null,
+        avg_dialogue_rounds_per_pid: row.created_pid ? row.dialogueWeighted / row.created_pid : null,
+        avg_preview_dur_sec_per_preview_pid: row.preview_pid ? row.previewDurWeighted / row.preview_pid : null
+      })).sort((a,b) => b.created_pid - a.created_pid);
+    }
+
+    function aggregateOverallTemplate(rows) {
+      const overall = {
+        template_id: null,
+        template_name: "全部创作"
+      };
+      numberFields.forEach((field) => { overall[field] = sum(rows, field); });
+      const taskWeight = sum(rows, "task_completed_pid");
+      const dialogueWeight = sum(rows, "created_pid");
+      const previewWeight = sum(rows, "preview_pid");
+      overall.avg_task_generation_dur_sec = taskWeight
+        ? rows.reduce((total, row) => total + Number(row.avg_task_generation_dur_sec || 0) * Number(row.task_completed_pid || 0), 0) / taskWeight
+        : null;
+      overall.avg_dialogue_rounds_per_pid = dialogueWeight
+        ? rows.reduce((total, row) => total + Number(row.avg_dialogue_rounds_per_pid || 0) * Number(row.created_pid || 0), 0) / dialogueWeight
+        : null;
+      overall.avg_preview_dur_sec_per_preview_pid = previewWeight
+        ? rows.reduce((total, row) => total + Number(row.avg_preview_dur_sec_per_preview_pid || 0) * Number(row.preview_pid || 0), 0) / previewWeight
+        : null;
+      return overall;
+    }
+
+    const usageFields = ["cover_exp_count","cover_clk_count","detail_exp_count","matched_use_clk_count","create_clk_count","detail_exp_user_count","matched_use_clk_user_count","create_clk_user_count","feed_entry_count","feed_create_clk_count","feed_create_success_count","feed_entry_user_count","feed_create_clk_user_count","feed_create_success_user_count"];
+    function aggregateUsage(rows) {
+      const grouped = new Map();
+      rows.forEach((row) => {
+        const key = String(row.template_id);
+        if (!grouped.has(key)) grouped.set(key, { template_id: row.template_id, template_name: displayTemplateName(row.template_id, row.template_name) });
+        const target = grouped.get(key);
+        usageFields.forEach((field) => { target[field] = Number(target[field] || 0) + Number(row[field] || 0); });
+      });
+      return [...grouped.values()];
+    }
+
+    function funnelHtml(rows, source, stages, valueField) {
+      const sourceRows = rows.filter((row) => row.entry_source === source);
+      const values = stages.map(([key]) => sum(sourceRows.filter((row) => row.stage === key), valueField));
+      const max = values[0] || Math.max(...values, 1);
+      return stages.map(([key,label], index) => {
+        const value = values[index];
+        const previous = index ? values[index - 1] : 0;
+        const conversion = index ? ratio(value, previous) : "入口";
+        // Funnel geometry represents ordered stages; the conversion label carries
+        // the actual rate. A fixed step ratio prevents low conversion from
+        // collapsing later stages into unreadable columns after date filtering.
+        const width = Math.max(22, Math.pow(0.78, index) * 100);
+        const hue = source === "all_template" || source === "acquisition_result" ? 252 : source === "feed" ? 162 : 212;
+        return `<div class="funnel-stage" style="--w:${width}%;--c:hsl(${hue} 58% ${45 + index * 5}%)"><div class="funnel-body"><span>${label}</span><strong>${fmt(value)}</strong></div><em>${conversion}</em></div>`;
+      }).join("");
+    }
+
+    function renderAcquisition() {
+      if (!dashboardData) return;
+      const hitRows = (dashboardData.acquisition_hit_daily || []).filter(inRange);
+      const funnelRows = (dashboardData.acquisition_funnel_daily || []).filter(inRange);
+      const behaviorRows = (dashboardData.acquisition_behavior_daily || []).filter(inRange);
+      const meta = dashboardData.acquisition_meta || {};
+      const status = document.getElementById("acquisitionStatus");
+      const latest = String(meta.latest_complete_dt || "");
+      const pretty = (key) => /^\d{8}$/.test(key) ? `${Number(key.slice(4,6))}月${Number(key.slice(6,8))}日` : "—";
+      document.getElementById("acquisitionRange").textContent = `当前筛选 · ${pretty(ymdKey(selectedStart))} — ${pretty(ymdKey(selectedEnd))}`;
+      const channels = Array.isArray(meta.channel_allowlist) && meta.channel_allowlist.length
+        ? meta.channel_allowlist.map(String)
+        : [...new Set(hitRows.map((row) => String(row.channel)))].sort();
+      if (selectedAcquisitionChannel !== "all" && !channels.includes(selectedAcquisitionChannel)) selectedAcquisitionChannel = "all";
+      const filters = document.getElementById("acquisitionChannelFilters");
+      filters.innerHTML = `<span>查看渠道</span>${["all",...channels].map((channel) => `<button type="button" data-acquisition-channel="${channel}" class="${selectedAcquisitionChannel===channel?"active":""}">${channel==="all"?"全部投放":channel}</button>`).join("")}`;
+      filters.querySelectorAll("[data-acquisition-channel]").forEach((button) => button.addEventListener("click", () => {
+        selectedAcquisitionChannel = button.dataset.acquisitionChannel;
+        renderAcquisition();
+      }));
+      const scoped = (rows) => selectedAcquisitionChannel === "all" ? rows : rows.filter((row) => String(row.channel) === selectedAcquisitionChannel);
+      const total = (rows, field) => rows.reduce((value,row) => value + Number(row[field] || 0),0);
+      const rate = (num,den) => den ? `${(num/den*100).toFixed(2)}%` : "—";
+      const channelRows = channels.map((channel) => {
+        const rows = hitRows.filter((row) => String(row.channel) === channel);
+        return { channel, new_users: total(rows,"new_users"), reached_feed_users: total(rows,"reached_feed_users"), first_template_users: total(rows,"first_template_users"), first_two_ready_users: total(rows,"first_two_ready_users"), first_two_template_users: total(rows,"first_two_template_users"), plus_click_users: total(rows,"plus_click_users"), popup_after_plus_users: total(rows,"popup_after_plus_users") };
+      });
+      document.getElementById("acquisitionHitBody").innerHTML = channelRows.length ? channelRows.map((row) => `<tr class="${selectedAcquisitionChannel===row.channel?"selected-channel":""}"><td class="template-name-cell"><b>${row.channel}</b><small>register_media_source</small></td><td>${fmt(row.new_users)}</td><td>${rate(row.reached_feed_users,row.new_users)}<div class="coverage">${fmt(row.reached_feed_users)} 人</div></td><td>${rate(row.first_template_users,row.new_users)}<div class="coverage">${fmt(row.first_template_users)} 人</div></td><td>${rate(row.first_two_template_users,row.new_users)}<div class="coverage">${fmt(row.first_two_template_users)} 人 · ${fmt(row.first_two_ready_users)} 人有两个浏览</div></td><td>${rate(row.popup_after_plus_users,row.new_users)}<div class="coverage">${fmt(row.popup_after_plus_users)} / ${fmt(row.new_users)} 人</div></td><td>${rate(row.popup_after_plus_users,row.plus_click_users)}<div class="coverage">${fmt(row.popup_after_plus_users)} / ${fmt(row.plus_click_users)} 人</div></td></tr>`).join("") : '<tr><td colspan="7"><div class="empty-state">独立数据尚未生成</div></td></tr>';
+
+      const scopedFunnels = scoped(funnelRows);
+      const feedStages = [["01_material_input","固排模板入口"],["02_create_click","Create 点击"],["03_create_success","创建成功"]];
+      const popupStages = [["01_plus_click","+ 点击"],["02_popup_exposure","弹窗曝光"],["03_template_click","模板点击"],["04_material_input","素材输入"],["05_create_click","Create 点击"],["06_create_success","创建成功"]];
+      document.getElementById("acquisitionFeedFunnel").innerHTML = scopedFunnels.length ? funnelHtml(scopedFunnels,"onboarding_feed",feedStages,acquisitionFunnelField) : '<div class="funnel-empty">暂无该渠道链路数据</div>';
+      document.getElementById("acquisitionPopupFunnel").innerHTML = scopedFunnels.length ? funnelHtml(scopedFunnels,"onboarding_template_wnd",popupStages,acquisitionFunnelField) : '<div class="funnel-empty">暂无该渠道链路数据</div>';
+      const scopeLabel = selectedAcquisitionChannel === "all" ? "全部投放渠道" : selectedAcquisitionChannel;
+      const unitLabel = acquisitionFunnelField === "user_count" ? "每日去重用户" : "严格创作会话";
+      document.getElementById("acquisitionFunnelScope").textContent = `${scopeLabel} · D0 ${unitLabel}逐级关联`;
+      document.getElementById("acquisitionBehaviorScope").textContent = scopeLabel;
+
+      const behaviors = scoped(behaviorRows);
+      const b = {
+        new_users: total(behaviors,"new_users"), consumer_users: total(behaviors,"consumer_users"), vv: total(behaviors,"vv"), dur_sec: total(behaviors,"dur_sec"),
+        view_3s_cnt: total(behaviors,"view_3s_cnt"), view_10s_cnt: total(behaviors,"view_10s_cnt"), like_cnt: total(behaviors,"like_cnt"), comment_cnt: total(behaviors,"comment_cnt"), favorite_cnt: total(behaviors,"favorite_cnt"), share_click_cnt: total(behaviors,"share_click_cnt"),
+        creator_users: total(behaviors,"creator_users"), created_pid: total(behaviors,"created_pid"), task_completed_pid: total(behaviors,"task_completed_pid"), preview_pid: total(behaviors,"preview_pid"), publisher_users: total(behaviors,"publisher_users"), published_pid: total(behaviors,"published_pid")
+      };
+      const resultRows = [
+        { entry_source:"acquisition_result", stage:"01_created_pid", object_count:b.created_pid },
+        { entry_source:"acquisition_result", stage:"02_task_completed_pid", object_count:b.task_completed_pid },
+        { entry_source:"acquisition_result", stage:"03_preview_pid", object_count:b.preview_pid },
+        { entry_source:"acquisition_result", stage:"04_published_pid", object_count:b.published_pid }
+      ];
+      const resultStages = [["01_created_pid","创建作品"],["02_task_completed_pid","Task 完成"],["03_preview_pid","内容预览"],["04_published_pid","发布成功"]];
+      document.getElementById("acquisitionResultFunnel").innerHTML = b.created_pid ? funnelHtml(resultRows,"acquisition_result",resultStages,"object_count") : '<div class="funnel-empty">暂无该渠道作品数据</div>';
+      const metricCards = (items) => items.map(([label,value,note]) => `<article class="card acquisition-metric"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
+      document.getElementById("acquisitionConsumptionMetrics").innerHTML = metricCards([
+        ["D0 消费人数",fmt(b.consumer_users),`${rate(b.consumer_users,b.new_users)} 新用户有消费`],
+        ["D0 VV",fmt(b.vv),`人均 ${b.new_users?fmt(b.vv/b.new_users,2):"—"}`],
+        ["人均消费时长",b.new_users?`${fmt(b.dur_sec/b.new_users,2)} 秒`:"—","D0 Home Feed dur_sec 合计 ÷ 新增用户"],
+        ["3s / 10s 率",`${rate(b.view_3s_cnt,b.vv)} / ${rate(b.view_10s_cnt,b.vv)}`,"对应停留次数 ÷ VV"],
+        ["互动率",`${rate(b.like_cnt,b.vv)} / ${rate(b.comment_cnt,b.vv)}`,`点赞 / 评论 · 收藏 ${rate(b.favorite_cnt,b.vv)} · 分享点击 ${rate(b.share_click_cnt,b.vv)}`]
+      ]);
+      document.getElementById("acquisitionCreationMetrics").innerHTML = metricCards([
+        ["D0 创作人数",fmt(b.creator_users),`${rate(b.creator_users,b.new_users)} 新用户有创作`],
+        ["D0 创建作品",fmt(b.created_pid),`人均 ${b.creator_users?fmt(b.created_pid/b.creator_users,2):"—"} 个 / 创作者`],
+        ["D0 发布人数",fmt(b.publisher_users),`${rate(b.publisher_users,b.new_users)} 新用户完成公开发布`],
+        ["D0 公开发布作品",fmt(b.published_pid),`${rate(b.published_pid,b.created_pid)} 创建作品公开发布`],
+        ["公开作品发布率",rate(b.published_pid,b.created_pid),"公开发布作品 ÷ 创建作品"]
+      ]);
+      const latestDate = /^\d{8}$/.test(latest) ? parseDate(`${latest.slice(0,4)}-${latest.slice(4,6)}-${latest.slice(6,8)}`) : null;
+      const retentionCards = [1,3,7,14,30].map((day) => {
+        const mature = behaviors.filter((row) => latestDate && (latestDate - parseDate(`${String(row.dt).slice(0,4)}-${String(row.dt).slice(4,6)}-${String(row.dt).slice(6,8)}`))/dayMs >= day);
+        const denominator = total(mature,"new_users");
+        const numerator = total(mature,`retained_d${day}`);
+        return [`D${day} 活跃留存`,denominator?rate(numerator,denominator):'<span class="pending-value">待回收</span>',denominator?`${fmt(numerator)} / ${fmt(denominator)} 个成熟 cohort 用户`:`最早于注册后第 ${day} 个完整数据日回收`];
+      });
+      document.getElementById("acquisitionRetentionMetrics").innerHTML = metricCards(retentionCards);
+      status.dataset.state = hitRows.length && behaviorRows.length ? "complete" : (hitRows.length || behaviorRows.length ? "partial" : "empty");
+      status.textContent = hitRows.length && behaviorRows.length ? `完整 · 数据截至 ${pretty(latest)}` : "所选日期暂无数据";
+    }
+
+    function renderDashboard() {
+      const chainRows = dashboardData.chain_daily.filter(inRange);
+      const overallChainRows = chainRows.filter((row) => !row.template_id);
+      const usageRows = (dashboardData.usage_daily || []).filter(inRange);
+      const templateRows = dashboardData.template_daily.filter(inRange);
+      const comparisonRows = dashboardData.comparison_daily.filter(inRange);
+      const benchmarkRows = (dashboardData.benchmark_daily || []).filter(inRange);
+      const benchmarkComplete = hasDateCoverage(benchmarkRows);
+      const outcomeTemplates = aggregateTemplates(templateRows);
+      const usageTemplates = aggregateUsage(usageRows);
+      const templatesById = new Map(outcomeTemplates.map((row) => [String(row.template_id), row]));
+      usageTemplates.forEach((row) => {
+        const key = String(row.template_id);
+        const base = templatesById.get(key) || { template_id: row.template_id, template_name: row.template_name };
+        templatesById.set(key, { ...base, ...row });
+      });
+      const templates = [...templatesById.values()].sort((a,b) => Number(b.created_pid || 0) - Number(a.created_pid || 0));
+      const shareRows = (dashboardData.share_daily || []).filter(inRange);
+      const benchmarkShareRows = (dashboardData.benchmark_share_daily || []).filter(inRange);
+      const shareSupplements = aggregateTemplates(shareRows);
+      const shareSupplementByTemplate = new Map(shareSupplements.map((row) => [String(row.template_id),row]));
+      const shareSupplementAvailable = shareRows.length > 0;
+      const overallTemplate = aggregateOverallTemplate(benchmarkRows);
+      const overallShareSupplement = aggregateOverallTemplate(benchmarkShareRows);
+      const centerStages = [["01_entry_click","➕ 点击"],["02_template_list_exp","模板列表曝光"],["03_template_card_click","模板卡片点击"],["04_template_detail_exp","模板详情曝光"],["05_use_click","Use 点击"],["06_create_click","Create 点击"],["07_create_success","模板创建成功"]];
+      const feedStages = [["01_entry_click","Feed Template 按钮点击"],["02_create_click","Create 按钮点击"],["03_create_success","模板创建成功"]];
+      const resultStages = [["01_created_pid","使用模板创建作品"],["02_task_completed_pid","Task 完成"],["03_preview_pid","内容预览"],["04_published_pid","发布成功"]];
+      const chainComplete = datasetCompleteForTab("overview");
+      const templateComplete = datasetCompleteForTab("feedback");
+      const resultFieldByStage = {
+        "01_created_pid": "created_pid",
+        "02_task_completed_pid": "task_completed_pid",
+        "03_preview_pid": "preview_pid",
+        "04_published_pid": "published_pid",
+      };
+      // PID 结果优先使用 template_daily，与创作用时和作品反馈同源；
+      // 若它尚未覆盖完整日期，则回退到已完成刷新的 chain_daily PID 链路，
+      // 避免点击链路先更新时把独立的第三个漏斗整块清空。
+      const templateResultRows = templateRows.flatMap((row) => resultStages.map(([stage]) => ({
+        dt: row.dt,
+        entry_source: "all_template",
+        stage,
+        template_id: row.template_id,
+        object_count: Number(row[resultFieldByStage[stage]] || 0),
+      })));
+      const chainResultRows = overallChainRows.filter((row) => row.entry_source === "all_template");
+      const resultRows = templateComplete ? templateResultRows : chainResultRows;
+      const resultAvailable = resultRows.some((row) => Number(row.object_count || 0) > 0);
+      document.getElementById("resultUnitBadge").textContent = templateComplete ? "作品 PID" : "作品 PID · 链路数据";
+      const funnelEmpty = '<div class="funnel-empty">所选日期暂无完整数据</div>';
+      document.getElementById("centerFunnel").innerHTML = chainComplete ? funnelHtml(overallChainRows,"template_center",centerStages,clickFunnelField) : funnelEmpty;
+      document.getElementById("feedFunnel").innerHTML = chainComplete ? funnelHtml(overallChainRows,"feed",feedStages,clickFunnelField) : funnelEmpty;
+      document.getElementById("resultFunnel").innerHTML = resultAvailable ? funnelHtml(resultRows,"all_template",resultStages,"object_count") : funnelEmpty;
+      const chainValue = (source, stage, field) => sum(overallChainRows.filter((row) => row.entry_source===source && row.stage===stage), field);
+      document.getElementById("kpiCenterEntry").textContent = chainComplete ? fmt(chainValue("template_center","01_entry_click",clickFunnelField)) : "—";
+      document.getElementById("kpiFeedEntry").textContent = chainComplete ? fmt(chainValue("feed","01_entry_click",clickFunnelField)) : "—";
+      document.getElementById("kpiCenterUseRate").textContent = chainComplete ? ratio(chainValue("template_center","05_use_click","user_count"),chainValue("template_center","04_template_detail_exp","user_count")) : "—";
+      const resultStageValue = (stage) => sum(resultRows.filter((row) => row.stage === stage), "object_count");
+      document.getElementById("kpiPublishRate").textContent = resultAvailable ? ratio(resultStageValue("04_published_pid"),resultStageValue("01_created_pid")) : "—";
+
+      const nameCell = (row) => `<td class="template-name-cell"><b>${row.template_name}</b><small>${shortId(row.template_id)}</small></td>`;
+      const overallNameCell = () => '<td class="template-name-cell"><b>全部创作</b><small>模板 + 非模板</small></td>';
+      const overallRow = (cells) => `<tr class="overall-row" data-progress-exclude="true">${overallNameCell()}${cells}</tr>`;
+      const totalRow = (cells) => `<tr class="total-row" data-progress-exclude="true"><td class="template-name-cell"><b>合计</b><small>全部官方模板</small></td>${cells}</tr>`;
+      const emptyRow = (columns, message) => `<tr><td colspan="${columns}"><div class="empty-state">${message}</div></td></tr>`;
+      const usageComplete = datasetCompleteForTab("usage");
+      const comparisonComplete = datasetCompleteForTab("duration");
+      const tableMessage = "所选日期暂无完整数据，请调整时间范围";
+      const usageValue = (row, attemptField, userField) => Number(row[usageFunnelUnit === "user" ? userField : attemptField] || 0);
+      const usageTotal = {
+        cover_exp_count: sum(templates,"cover_exp_count"),
+        cover_clk_count: sum(templates,"cover_clk_count"),
+        detail: templates.reduce((total,row) => total + usageValue(row,"detail_exp_count","detail_exp_user_count"),0),
+        use: templates.reduce((total,row) => total + usageValue(row,"matched_use_clk_count","matched_use_clk_user_count"),0),
+        centerCreate: templates.reduce((total,row) => total + usageValue(row,"create_clk_count","create_clk_user_count"),0),
+        feedEntry: templates.reduce((total,row) => total + usageValue(row,"feed_entry_count","feed_entry_user_count"),0),
+        feedCreate: templates.reduce((total,row) => total + usageValue(row,"feed_create_clk_count","feed_create_clk_user_count"),0),
+        feedSuccess: templates.reduce((total,row) => total + usageValue(row,"feed_create_success_count","feed_create_success_user_count"),0),
+        created_pid: sum(templates,"created_pid"),
+        published_pid: sum(templates,"published_pid"),
+        private_published_pid: sum(templates,"private_published_pid")
+      };
+      const usageTotalRow = totalRow(`<td>${fmt(usageTotal.cover_exp_count)}</td><td>${fmt(usageTotal.cover_clk_count)}</td><td>${ratio(usageTotal.cover_clk_count,usageTotal.cover_exp_count)}</td><td>${fmt(usageTotal.detail)}</td><td>${fmt(usageTotal.use)}</td><td>${ratio(usageTotal.use,usageTotal.detail)}</td><td>${fmt(usageTotal.centerCreate)}</td><td>${ratio(usageTotal.centerCreate,usageTotal.use)}</td><td>${fmt(usageTotal.feedEntry)}</td><td>${fmt(usageTotal.feedCreate)}</td><td>${ratio(usageTotal.feedCreate,usageTotal.feedEntry)}</td><td>${fmt(usageTotal.feedSuccess)}</td><td>${ratio(usageTotal.feedSuccess,usageTotal.feedCreate)}</td><td>${fmt(usageTotal.created_pid)}</td><td>${ratio(usageTotal.published_pid,usageTotal.created_pid)}</td><td>${ratio(usageTotal.private_published_pid,usageTotal.created_pid)}</td>`);
+      document.getElementById("usageBody").innerHTML = usageComplete ? templates.map((r) => {
+        const detail = usageValue(r,"detail_exp_count","detail_exp_user_count");
+        const use = usageValue(r,"matched_use_clk_count","matched_use_clk_user_count");
+        const centerCreate = usageValue(r,"create_clk_count","create_clk_user_count");
+        const feedEntry = usageValue(r,"feed_entry_count","feed_entry_user_count");
+        const feedCreate = usageValue(r,"feed_create_clk_count","feed_create_clk_user_count");
+        const feedSuccess = usageValue(r,"feed_create_success_count","feed_create_success_user_count");
+        return `<tr>${nameCell(r)}<td>${fmt(r.cover_exp_count)}</td><td>${fmt(r.cover_clk_count)}</td><td>${ratio(r.cover_clk_count,r.cover_exp_count)}</td><td>${fmt(detail)}</td><td>${fmt(use)}</td><td>${ratio(use,detail)}</td><td>${fmt(centerCreate)}</td><td>${ratio(centerCreate,use)}</td><td>${fmt(feedEntry)}</td><td>${fmt(feedCreate)}</td><td>${ratio(feedCreate,feedEntry)}</td><td>${fmt(feedSuccess)}</td><td>${ratio(feedSuccess,feedCreate)}</td><td>${fmt(r.created_pid)}</td><td>${ratio(r.published_pid,r.created_pid)}</td><td>${ratio(r.private_published_pid,r.created_pid)}</td></tr>`;
+      }).join("") + usageTotalRow : emptyRow(17, tableMessage);
+      const templateTotal = aggregateOverallTemplate(templates);
+      const durationTotalRow = totalRow(`<td>${fmt(templateTotal.created_pid)}</td><td>${fmt(templateTotal.task_completed_pid)}</td><td>${fmt(templateTotal.preview_pid)}</td><td>${fmt(templateTotal.avg_task_generation_dur_sec,2)}</td><td>${fmt(templateTotal.avg_dialogue_rounds_per_pid,2)}</td><td>${fmt(templateTotal.avg_preview_dur_sec_per_preview_pid,2)}</td>`);
+      const feedbackOverallRow = benchmarkComplete ? overallRow(`<td>${fmt(overallTemplate.created_pid)}</td><td>${fmt(overallTemplate.published_pid)}</td><td>${ratio(overallTemplate.published_pid,overallTemplate.created_pid)}</td><td>${ratio(overallTemplate.private_published_pid,overallTemplate.created_pid)}</td><td>${fmt(overallTemplate.vv)}</td><td>${fmt(overallTemplate.vv/overallTemplate.published_pid,2)}</td><td>${fmt(overallTemplate.dur_sec/overallTemplate.vv,2)}</td><td>${ratio(overallTemplate.dur_gt_10s_cnt,overallTemplate.vv)}</td><td>${ratio(overallTemplate.like_cnt,overallTemplate.vv)}</td><td>${ratio(overallTemplate.favorite_cnt,overallTemplate.vv)}</td><td>${ratio(overallTemplate.comment_cnt,overallTemplate.vv)}</td><td>${ratio(overallTemplate.share_click_cnt,overallTemplate.vv)}</td>`) : overallRow('<td colspan="12" class="pending">大盘数据待完成所选日期回填</td>');
+      const feedbackTotalRow = totalRow(`<td>${fmt(templateTotal.created_pid)}</td><td>${fmt(templateTotal.published_pid)}</td><td>${ratio(templateTotal.published_pid,templateTotal.created_pid)}</td><td>${ratio(templateTotal.private_published_pid,templateTotal.created_pid)}</td><td>${fmt(templateTotal.vv)}</td><td>${fmt(templateTotal.vv/templateTotal.published_pid,2)}</td><td>${fmt(templateTotal.dur_sec/templateTotal.vv,2)}</td><td>${ratio(templateTotal.dur_gt_10s_cnt,templateTotal.vv)}</td><td>${ratio(templateTotal.like_cnt,templateTotal.vv)}</td><td>${ratio(templateTotal.favorite_cnt,templateTotal.vv)}</td><td>${ratio(templateTotal.comment_cnt,templateTotal.vv)}</td><td>${ratio(templateTotal.share_click_cnt,templateTotal.vv)}</td>`);
+      document.getElementById("durationBody").innerHTML = templateComplete ? templates.map((r) => `<tr>${nameCell(r)}<td>${fmt(r.created_pid)}</td><td>${fmt(r.task_completed_pid)}</td><td>${fmt(r.preview_pid)}</td><td>${fmt(r.avg_task_generation_dur_sec,2)}</td><td>${fmt(r.avg_dialogue_rounds_per_pid,2)}</td><td>${fmt(r.avg_preview_dur_sec_per_preview_pid,2)}</td></tr>`).join("") + durationTotalRow : emptyRow(7, tableMessage);
+      document.getElementById("feedbackBody").innerHTML = templateComplete ? feedbackOverallRow + templates.map((r) => `<tr>${nameCell(r)}<td>${fmt(r.created_pid)}</td><td>${fmt(r.published_pid)}</td><td>${ratio(r.published_pid,r.created_pid)}</td><td>${ratio(r.private_published_pid,r.created_pid)}</td><td>${fmt(r.vv)}</td><td>${fmt(r.vv/r.published_pid,2)}</td><td>${fmt(r.dur_sec/r.vv,2)}</td><td>${ratio(r.dur_gt_10s_cnt,r.vv)}</td><td>${ratio(r.like_cnt,r.vv)}</td><td>${ratio(r.favorite_cnt,r.vv)}</td><td>${ratio(r.comment_cnt,r.vv)}</td><td>${ratio(r.share_click_cnt,r.vv)}</td></tr>`).join("") + feedbackTotalRow : emptyRow(13, tableMessage);
+      // The share supplement is deliberately isolated: a missing field or a
+      // future share-only rendering issue must not affect the other five tabs.
+      try {
+        const benchmarkShareAvailable = hasDateCoverage(benchmarkShareRows);
+        const overallShareRow = benchmarkComplete ? overallRow(`<td>${fmt(overallTemplate.share_via_cnt)}</td><td>${fmt(overallTemplate.copy_link_cnt)}</td><td>${fmt(overallTemplate.x_cnt)}</td><td>${fmt(overallTemplate.tiktok_cnt)}</td><td>${fmt(overallTemplate.instagram_cnt)}</td><td>${fmt(overallTemplate.messages_cnt)}</td><td>${fmt(overallTemplate.author_self_share_cnt)}</td><td>${fmt(overallTemplate.author_self_shared_pid)}</td><td>${ratio(overallTemplate.author_self_shared_pid,overallTemplate.published_pid)}</td><td>${benchmarkShareAvailable ? fmt(overallShareSupplement.h5_share_page_exposure_cnt) : "—"}</td><td>${benchmarkShareAvailable ? fmt(overallShareSupplement.app_deeplink_page_exposure_cnt) : "—"}</td><td>${benchmarkShareAvailable ? fmt(overallShareSupplement.total_external_exposure_cnt) : "—"}</td><td>${benchmarkShareAvailable ? fmt(overallShareSupplement.new_user_acquisition_cnt) : "—"}</td>`) : overallRow('<td colspan="13" class="pending">大盘数据待完成所选日期回填</td>');
+        const shareTotalRow = totalRow(`<td>${fmt(templateTotal.share_via_cnt)}</td><td>${fmt(templateTotal.copy_link_cnt)}</td><td>${fmt(templateTotal.x_cnt)}</td><td>${fmt(templateTotal.tiktok_cnt)}</td><td>${fmt(templateTotal.instagram_cnt)}</td><td>${fmt(templateTotal.messages_cnt)}</td><td>${fmt(templateTotal.author_self_share_cnt)}</td><td>${fmt(templateTotal.author_self_shared_pid)}</td><td>${ratio(templateTotal.author_self_shared_pid,templateTotal.published_pid)}</td><td>${shareSupplementAvailable ? fmt(sum(shareSupplements,"h5_share_page_exposure_cnt")) : "—"}</td><td>${shareSupplementAvailable ? fmt(sum(shareSupplements,"app_deeplink_page_exposure_cnt")) : "—"}</td><td>${shareSupplementAvailable ? fmt(sum(shareSupplements,"total_external_exposure_cnt")) : "—"}</td><td>${shareSupplementAvailable ? fmt(sum(shareSupplements,"new_user_acquisition_cnt")) : "—"}</td>`);
+        document.getElementById("shareBody").innerHTML = templateComplete ? overallShareRow + templates.map((r) => {
+          const supplement = shareSupplementByTemplate.get(String(r.template_id)) || {};
+          return `<tr>${nameCell(r)}<td>${fmt(r.share_via_cnt)}</td><td>${fmt(r.copy_link_cnt)}</td><td>${fmt(r.x_cnt)}</td><td>${fmt(r.tiktok_cnt)}</td><td>${fmt(r.instagram_cnt)}</td><td>${fmt(r.messages_cnt)}</td><td>${fmt(r.author_self_share_cnt)}</td><td>${fmt(r.author_self_shared_pid)}</td><td>${ratio(r.author_self_shared_pid,r.published_pid)}</td><td>${shareSupplementAvailable ? fmt(supplement.h5_share_page_exposure_cnt || 0) : "—"}</td><td>${shareSupplementAvailable ? fmt(supplement.app_deeplink_page_exposure_cnt || 0) : "—"}</td><td>${shareSupplementAvailable ? fmt(supplement.total_external_exposure_cnt || 0) : "—"}</td><td>${shareSupplementAvailable ? fmt(supplement.new_user_acquisition_cnt || 0) : "—"}</td></tr>`;
+        }).join("") + shareTotalRow : emptyRow(14, tableMessage);
+        document.getElementById("shareTotal").textContent = templateComplete ? fmt(sum(templates,"author_self_share_cnt")) : "—";
+        document.getElementById("sharePid").textContent = templateComplete ? fmt(sum(templates,"author_self_shared_pid")) : "—";
+        document.getElementById("sharePidRate").textContent = templateComplete ? ratio(sum(templates,"author_self_shared_pid"),sum(templates,"published_pid")) : "—";
+        document.getElementById("shareH5Exposure").textContent = templateComplete && shareSupplementAvailable ? fmt(sum(shareSupplements,"h5_share_page_exposure_cnt")) : "—";
+        document.getElementById("shareAppExposure").textContent = templateComplete && shareSupplementAvailable ? fmt(sum(shareSupplements,"app_deeplink_page_exposure_cnt")) : "—";
+        document.getElementById("shareNewUsers").textContent = templateComplete && shareSupplementAvailable ? fmt(sum(shareSupplements,"new_user_acquisition_cnt")) : "—";
+        const channelTotals = {
+          channelShareVia: "share_via_cnt",
+          channelCopyLink: "copy_link_cnt",
+          channelX: "x_cnt",
+          channelTiktok: "tiktok_cnt",
+          channelInstagram: "instagram_cnt",
+          channelMessages: "messages_cnt"
+        };
+        Object.entries(channelTotals).forEach(([id, field]) => {
+          document.getElementById(id).textContent = templateComplete ? fmt(sum(templates,field)) : "—";
+        });
+      } catch (error) {
+        console.error("站外分享模块渲染失败，其他模块继续展示", error);
+        document.getElementById("shareBody").innerHTML = emptyRow(14, "站外分享补充数据暂不可用，其他模块不受影响");
+        ["shareTotal","sharePid","sharePidRate","shareH5Exposure","shareAppExposure","shareNewUsers","channelShareVia","channelCopyLink","channelX","channelTiktok","channelInstagram","channelMessages"].forEach((id) => setMetric(id,"—"));
+        const shareStatus = document.querySelector('[data-panel-status="share"]');
+        if (shareStatus) {
+          shareStatus.dataset.state = "error";
+          shareStatus.textContent = "加载失败 · 其他模块不受影响";
+        }
+      }
+
+      const totalCreated = sum(templates,"created_pid");
+      const totalPublished = sum(templates,"published_pid");
+      const totalPrivatePublished = sum(templates,"private_published_pid");
+      const totalVv = sum(templates,"vv");
+      setMetric("feedbackCreated",templateComplete ? fmt(totalCreated) : "—");
+      setMetric("feedbackPublished",templateComplete ? fmt(totalPublished) : "—");
+      setMetric("feedbackPublishRate",templateComplete && totalCreated ? (totalPublished / totalCreated * 100).toFixed(2) : "—",templateComplete && totalCreated ? "%" : "");
+      setMetric("feedbackPrivateRate",templateComplete && totalCreated ? (totalPrivatePublished / totalCreated * 100).toFixed(2) : "—",templateComplete && totalCreated ? "%" : "");
+      setMetric("feedbackVv",templateComplete ? fmt(totalVv) : "—");
+      setMetric("feedbackAvgVv",templateComplete && totalPublished ? fmt(totalVv / totalPublished,2) : "—");
+      setMetric("feedbackAvgVvDur",templateComplete && totalVv ? fmt(sum(templates,"dur_sec") / totalVv,2) : "—",templateComplete && totalVv ? "秒" : "");
+      setMetric("feedback10sRate",templateComplete && totalVv ? (sum(templates,"dur_gt_10s_cnt") / totalVv * 100).toFixed(2) : "—",templateComplete && totalVv ? "%" : "");
+
+      setComparisonMetric("durationTaskTemplate","durationTaskNoTemplate","durationTaskDelta",
+        comparisonComplete ? weightedAverage(comparisonRows,"template","avg_task_generation_dur_sec","task_completed_pid") : null,
+        comparisonComplete ? weightedAverage(comparisonRows,"no_template","avg_task_generation_dur_sec","task_completed_pid") : null,"秒");
+      setComparisonMetric("durationDialogueTemplate","durationDialogueNoTemplate","durationDialogueDelta",
+        comparisonComplete ? weightedAverage(comparisonRows,"template","avg_dialogue_rounds_per_pid","created_pid") : null,
+        comparisonComplete ? weightedAverage(comparisonRows,"no_template","avg_dialogue_rounds_per_pid","created_pid") : null,"轮","/PID");
+      setComparisonMetric("durationPreviewTemplate","durationPreviewNoTemplate","durationPreviewDelta",
+        comparisonComplete ? weightedAverage(comparisonRows,"template","avg_preview_dur_sec_per_preview_pid","preview_pid") : null,
+        comparisonComplete ? weightedAverage(comparisonRows,"no_template","avg_preview_dur_sec_per_preview_pid","preview_pid") : null,"秒");
+
+      const templateCreatorDays = sum(comparisonRows.filter((row)=>row.content_group==="template"),"creator_person_days");
+      const allCreatorDays = sum(comparisonRows,"creator_person_days");
+      document.getElementById("templateCreatorShare").textContent = allCreatorDays ? `${(templateCreatorDays / allCreatorDays * 100).toFixed(1)}%` : "—";
+
+      refreshTableProgressBars();
+
+      const dates = selectedDateKeys();
+      chartLabels = dates.map((value) => `${value.slice(4,6)}/${value.slice(6,8)}`);
+      chartSets.overviewChart.labels = [...chartLabels];
+      const feedbackTrendTemplates = templates.filter((row) => templateRows.some((dailyRow) =>
+        String(dailyRow.template_id || "") === String(row.template_id)
+        && (Number(dailyRow.published_pid || 0) > 0 || Number(dailyRow.vv || 0) > 0)
+      ));
+      const niceChartMax = (values, floorValue) => {
+        const maximum = Math.max(...values.filter(Number.isFinite), 0);
+        if (!maximum) return floorValue;
+        const roughStep = maximum / 4;
+        const magnitude = 10 ** Math.floor(Math.log10(Math.max(roughStep, Number.EPSILON)));
+        const normalized = roughStep / magnitude;
+        const step = (normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10) * magnitude;
+        return Math.max(floorValue, Math.ceil(maximum / step) * step);
+      };
+      const feedbackTrendColors = ["#f18438","#54c27a","#3abdc4","#9370df","#b692e8","#2caf83","#5d43c9","#e65f78","#d6a52f","#5470c6","#91cc75","#fac858","#ee6666","#73c0de","#3ba272","#fc8452","#9a60b4","#ea7ccc"];
+      const availableFeedbackTemplateIds = new Set(feedbackTrendTemplates.map((template) => String(template.template_id)));
+      [...selectedFeedbackTrendTemplateIds].forEach((templateId) => {
+        if (!availableFeedbackTemplateIds.has(templateId)) selectedFeedbackTrendTemplateIds.delete(templateId);
+      });
+      const feedbackValues = (rows) => dates.map((date) => {
+        const dayRows = rows.filter((row) => String(row.dt) === date);
+        const vv = sum(dayRows,"vv");
+        if (selectedFeedbackTrendMetric === "interaction_rate") {
+          const interactions = sum(dayRows,"like_cnt") + sum(dayRows,"favorite_cnt") + sum(dayRows,"comment_cnt") + sum(dayRows,"share_click_cnt");
+          return vv ? interactions / vv * 100 : NaN;
+        }
+        const publishedPid = sum(dayRows,"published_pid");
+        return publishedPid ? vv / publishedPid : NaN;
+      });
+      const selectedFeedbackTemplates = feedbackTrendTemplates.filter((template) => selectedFeedbackTrendTemplateIds.has(String(template.template_id)));
+      const feedbackTrendDefinitions = [
+        { key: "all_creation", name: "全部创作", color: "#172033", values: feedbackValues(benchmarkRows) },
+        { key: "template_total", name: "模板合计", color: "#3498f5", values: feedbackValues(templateRows) },
+        ...selectedFeedbackTemplates.map((template, index) => {
+          const templateId = String(template.template_id);
+          return {
+            key: `template:${templateId}`,
+            name: template.template_name,
+            title: `${template.template_name} · ${shortId(template.template_id)}`,
+            color: feedbackTrendColors[index % feedbackTrendColors.length],
+            values: feedbackValues(templateRows.filter((row) => String(row.template_id || "") === templateId))
+          };
+        })
+      ];
+      feedbackTrendDefinitions.forEach((definition) => {
+        if (feedbackTrendSeriesVisibility[definition.key] == null) feedbackTrendSeriesVisibility[definition.key] = true;
+      });
+      const feedbackTrendSeries = feedbackTrendDefinitions.map((definition, index) => ({
+        color: definition.color,
+        labelOffset: index % 2 ? 17 : -11,
+        values: definition.values
+      }));
+      chartSets.feedbackTrendChart.labels = [...chartLabels];
+      chartSets.feedbackTrendChart.series = feedbackTrendSeries;
+      chartSets.feedbackTrendChart.max = niceChartMax(feedbackTrendSeries.flatMap((series) => series.values), selectedFeedbackTrendMetric === "interaction_rate" ? 5 : 10);
+      chartSets.feedbackTrendChart.axisFormatter = selectedFeedbackTrendMetric === "interaction_rate"
+        ? (value) => `${fmt(value, value >= 10 ? 0 : 1)}%`
+        : (value) => fmt(value, value >= 100 ? 0 : 1);
+      chartSets.feedbackTrendChart.pointFormatter = (value) => fmt(value, 2);
+      chartVisibility.feedbackTrendChart = feedbackTrendDefinitions.map((definition) => feedbackTrendSeriesVisibility[definition.key] !== false);
+
+      const feedbackLegend = document.getElementById("feedbackTrendTemplateLegend");
+      feedbackLegend.innerHTML = feedbackTrendDefinitions.map((definition, index) => {
+        const active = feedbackTrendSeriesVisibility[definition.key] !== false;
+        return `<button class="legend-series ${active ? "active" : ""}" type="button" data-feedback-series-index="${index}" aria-pressed="${active}"${definition.title ? ` title="${definition.title}"` : ""}><i style="--legend:${definition.color}"></i>${definition.name}</button>`;
+      }).join("");
+      feedbackLegend.querySelectorAll("[data-feedback-series-index]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const index = Number(button.dataset.feedbackSeriesIndex);
+          const definition = feedbackTrendDefinitions[index];
+          feedbackTrendSeriesVisibility[definition.key] = feedbackTrendSeriesVisibility[definition.key] === false;
+          chartVisibility.feedbackTrendChart[index] = feedbackTrendSeriesVisibility[definition.key];
+          button.classList.toggle("active", feedbackTrendSeriesVisibility[definition.key]);
+          button.setAttribute("aria-pressed", String(feedbackTrendSeriesVisibility[definition.key]));
+          drawAllCharts();
+        });
+      });
+      document.getElementById("feedbackTemplateFilterSummary").textContent = selectedFeedbackTrendTemplateIds.size
+        ? `筛选模板（${selectedFeedbackTrendTemplateIds.size}）`
+        : "筛选模板";
+      const feedbackFilterMenu = document.getElementById("feedbackTemplateFilterMenu");
+      feedbackFilterMenu.innerHTML = feedbackTrendTemplates.map((template, index) => {
+        const checked = selectedFeedbackTrendTemplateIds.has(String(template.template_id));
+        return `<label title="${template.template_name} · ${shortId(template.template_id)}"><input type="checkbox" data-feedback-filter-index="${index}" ${checked ? "checked" : ""}>${template.template_name}</label>`;
+      }).join("");
+      const feedbackTemplateSearch = document.getElementById("feedbackTemplateSearch");
+      const applyFeedbackTemplateSearch = () => {
+        const query = feedbackTemplateSearch.value.trim().toLocaleLowerCase();
+        feedbackFilterMenu.querySelectorAll("label").forEach((label) => {
+          label.hidden = Boolean(query && !label.textContent.toLocaleLowerCase().includes(query));
+        });
+        if (query) document.getElementById("feedbackTemplateFilter").open = true;
+      };
+      feedbackTemplateSearch.oninput = applyFeedbackTemplateSearch;
+      feedbackTemplateSearch.onsearch = applyFeedbackTemplateSearch;
+      applyFeedbackTemplateSearch();
+      feedbackFilterMenu.querySelectorAll("[data-feedback-filter-index]").forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          const template = feedbackTrendTemplates[Number(checkbox.dataset.feedbackFilterIndex)];
+          const templateId = String(template.template_id);
+          if (checkbox.checked) {
+            selectedFeedbackTrendTemplateIds.add(templateId);
+            feedbackTrendSeriesVisibility[`template:${templateId}`] = true;
+          } else {
+            selectedFeedbackTrendTemplateIds.delete(templateId);
+          }
+          renderDashboard();
+        });
+      });
+      document.querySelectorAll("[data-feedback-metric]").forEach((button) => {
+        const selected = button.dataset.feedbackMetric === selectedFeedbackTrendMetric;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-selected", String(selected));
+        button.onclick = () => {
+          selectedFeedbackTrendMetric = button.dataset.feedbackMetric;
+          renderDashboard();
+        };
+      });
+      const isInteractionTrend = selectedFeedbackTrendMetric === "interaction_rate";
+      document.getElementById("feedbackTrendDescription").textContent = isInteractionTrend
+        ? "互动率 · 每日互动次数 ÷ 每日总 VV"
+        : "条均 VV · 每日总 VV ÷ 每日公开发布 PID";
+      document.getElementById("feedbackTrendNote").textContent = isInteractionTrend
+        ? "互动率 =（点赞＋收藏＋评论＋分享点击）÷ 总 VV；排除内部用户和作者本人互动。"
+        : "条均 VV = 模板作品在首次公开发布自然日 D0 的总 VV ÷ 当日公开发布 PID。";
+      const availableTrendTemplates = templates.filter((row) => chainRows.some((chainRow) => String(chainRow.template_id || "") === String(row.template_id)));
+      if (selectedTrendTemplateId !== "all" && !availableTrendTemplates.some((row) => String(row.template_id) === selectedTrendTemplateId)) {
+        selectedTrendTemplateId = "all";
+        selectedTrendTemplateName = "整体";
+      }
+      const scopeNode = document.getElementById("trendTemplateScope");
+      scopeNode.innerHTML = [
+        `<button class="${selectedTrendTemplateId === "all" ? "active" : ""}" type="button" role="tab" data-trend-template-index="all" aria-selected="${selectedTrendTemplateId === "all"}">整体</button>`,
+        ...availableTrendTemplates.map((row, index) => `<button class="${selectedTrendTemplateId === String(row.template_id) ? "active" : ""}" type="button" role="tab" data-trend-template-index="${index}" aria-selected="${selectedTrendTemplateId === String(row.template_id)}" title="${row.template_name} · ${shortId(row.template_id)}">${row.template_name}</button>`)
+      ].join("");
+      scopeNode.querySelectorAll("[data-trend-template-index]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const template = button.dataset.trendTemplateIndex === "all" ? null : availableTrendTemplates[Number(button.dataset.trendTemplateIndex)];
+          selectedTrendTemplateId = template ? String(template.template_id) : "all";
+          selectedTrendTemplateName = template?.template_name || "整体";
+          renderDashboard();
+          document.querySelector('[data-chart-legend="overviewChart"]').dispatchEvent(new CustomEvent("trendscopechange"));
+        });
+      });
+      const trendRows = selectedTrendTemplateId === "all"
+        ? overallChainRows
+        : chainRows.filter((row) => String(row.template_id || "") === selectedTrendTemplateId);
+      const resultTrendRows = selectedTrendTemplateId === "all"
+        ? resultRows
+        : resultRows.filter((row) => String(row.template_id || "") === selectedTrendTemplateId);
+      const dailyRate = (date, source, numeratorStage, denominatorStage) => {
+        const dayRows = trendRows.filter((row) => String(row.dt)===date && row.entry_source===source);
+        const denominator = sum(dayRows.filter((r)=>r.stage===denominatorStage),"user_count");
+        return denominator ? sum(dayRows.filter((r)=>r.stage===numeratorStage),"user_count") / denominator * 100 : NaN;
+      };
+      chartSets.overviewChart.series[0].values = selectedTrendTemplateId === "all" ? dates.map((d)=>dailyRate(d,"template_center","02_template_list_exp","01_entry_click")) : dates.map(()=>NaN);
+      chartSets.overviewChart.series[1].values = dates.map((d)=>dailyRate(d,"template_center","03_template_card_click",selectedTrendTemplateId === "all" ? "02_template_list_exp" : "02_template_item_exp"));
+      chartSets.overviewChart.series[2].values = dates.map((d)=>dailyRate(d,"template_center","04_template_detail_exp","03_template_card_click"));
+      chartSets.overviewChart.series[3].values = dates.map((d)=>dailyRate(d,"template_center","05_use_click","04_template_detail_exp"));
+      chartSets.overviewChart.series[4].values = dates.map((d)=>dailyRate(d,"template_center","06_create_click","05_use_click"));
+      chartSets.overviewChart.series[10].values = dates.map((d)=>dailyRate(d,"template_center","07_create_success","06_create_click"));
+      chartSets.overviewChart.series[5].values = dates.map((d)=>dailyRate(d,"feed","02_create_click","01_entry_click"));
+      chartSets.overviewChart.series[6].values = dates.map((d)=>dailyRate(d,"feed","03_create_success","02_create_click"));
+      const dailyResultRate = (date, numeratorStage, denominatorStage) => {
+        const day = resultTrendRows.filter((r)=>String(r.dt)===date);
+        const denominator = sum(day.filter((r)=>r.stage===denominatorStage),"object_count");
+        return denominator ? sum(day.filter((r)=>r.stage===numeratorStage),"object_count") / denominator * 100 : NaN;
+      };
+      chartSets.overviewChart.series[7].values = dates.map((d)=>dailyResultRate(d,"02_task_completed_pid","01_created_pid"));
+      chartSets.overviewChart.series[8].values = dates.map((d)=>dailyResultRate(d,"03_preview_pid","02_task_completed_pid"));
+      chartSets.overviewChart.series[9].values = dates.map((d)=>dailyResultRate(d,"04_published_pid","03_preview_pid"));
+      const firstTrendDataKey = selectedTrendTemplateId === "all" ? null : [...new Set(trendRows.map((row) => String(row.dt)))].sort()[0];
+      const firstTrendDataIndex = firstTrendDataKey ? dates.indexOf(firstTrendDataKey) : -1;
+      chartSets.overviewChart.emptyPrefix = firstTrendDataIndex > 0
+        ? { endIndex: firstTrendDataIndex, label: `${firstTrendDataKey.slice(4,6)}/${firstTrendDataKey.slice(6,8)} 前无链路数据` }
+        : null;
+      chartSets.overviewChart.scopeSuffix = firstTrendDataIndex > 0
+        ? ` · ${Number(firstTrendDataKey.slice(4,6))}月${Number(firstTrendDataKey.slice(6,8))}日起有数据`
+        : "";
+      const activeTrendName = document.querySelector('[data-trend-tabs="overviewChart"] [data-trend-group].active')?.textContent || "➕点击漏斗";
+      document.getElementById("trendDescription").textContent = `${activeTrendName} · ${selectedTrendTemplateName} · ${activeTrendName.includes("作品") ? "每日逐级 PID 转化率" : "每日逐级人次转化率"}${chartSets.overviewChart.scopeSuffix}`;
+      const overviewMax = Math.max(...chartSets.overviewChart.series.flatMap((series)=>series.values).filter(Number.isFinite),100);
+      chartSets.overviewChart.max = Math.max(100,Math.ceil(overviewMax / 25) * 25);
+      // D1 retention needs one complete observation day after the cohort date.
+      // Keep immature dates out of the chart entirely so the x-axis does not
+      // reserve an empty slot at the right edge.
+      const compDates = tabDateInfo("retention").completeKeys;
+      chartSets.retentionChart.labels = compDates.map((value) => `${value.slice(4,6)}/${value.slice(6,8)}`);
+      const overallRetentionRate = (date, numeratorField) => {
+        const dayRows = comparisonRows.filter((row) => String(row.dt) === date && ["template","no_template"].includes(row.content_group));
+        if (dayRows.length !== 2 || dayRows.some((row) => row[numeratorField] == null || row.creator_person_days == null)) return NaN;
+        const creatorDays = sum(dayRows,"creator_person_days");
+        return creatorDays ? sum(dayRows,numeratorField) / creatorDays * 100 : NaN;
+      };
+      chartSets.retentionChart.series[0].values = compDates.map((d)=>overallRetentionRate(d,"d1_retained_person_days"));
+      chartSets.retentionChart.series[1].values = compDates.map((d)=>Number(comparisonRows.find((r)=>String(r.dt)===d&&r.content_group==="template")?.d1_retention_rate ?? NaN)*100);
+      chartSets.retentionChart.series[2].values = compDates.map((d)=>Number(comparisonRows.find((r)=>String(r.dt)===d&&r.content_group==="no_template")?.d1_retention_rate ?? NaN)*100);
+      chartSets.creationRetentionChart.labels = [...chartSets.retentionChart.labels];
+      chartSets.creationRetentionChart.series[0].values = compDates.map((d)=>overallRetentionRate(d,"d1_creation_retained_person_days"));
+      chartSets.creationRetentionChart.series[1].values = compDates.map((d)=>Number(comparisonRows.find((r)=>String(r.dt)===d&&r.content_group==="template")?.d1_creation_retention_rate ?? NaN)*100);
+      chartSets.creationRetentionChart.series[2].values = compDates.map((d)=>Number(comparisonRows.find((r)=>String(r.dt)===d&&r.content_group==="no_template")?.d1_creation_retention_rate ?? NaN)*100);
+      requestAnimationFrame(drawAllCharts);
+      scheduleOverallSticky();
+      renderAcquisition();
+    }
+
+    let chartLabels = [];
+    const chartSets = {
+      overviewChart: {
+        min: 0, max: 100,
+        series: [
+          { color: "#f18438", labelOffset: 17, values: [] },
+          { color: "#54c27a", labelOffset: -11, values: [] },
+          { color: "#3abdc4", labelOffset: -11, values: [] },
+          { color: "#3498f5", labelOffset: -12, values: [] },
+          { color: "#9370df", labelOffset: 18, values: [] },
+          { color: "#2caf83", labelOffset: 18, values: [] },
+          { color: "#70d4b5", labelOffset: -12, values: [] },
+          { color: "#5d43c9", labelOffset: -12, values: [] },
+          { color: "#7b68d6", labelOffset: 18, values: [] },
+          { color: "#9a8bdd", labelOffset: -12, values: [] },
+          { color: "#b692e8", labelOffset: -12, values: [] }
+        ]
+      },
+      retentionChart: {
+        min: 55, max: 75,
+        series: [
+          { color: "#172033", labelOffset: -25, values: [] },
+          { color: "#3498f5", labelOffset: -10, values: [] },
+          { color: "#f18438", labelOffset: 18, values: [] }
+        ]
+      },
+      creationRetentionChart: {
+        min: 0, max: 40,
+        series: [
+          { color: "#172033", labelOffset: -25, values: [] },
+          { color: "#3498f5", labelOffset: -10, values: [] },
+          { color: "#f18438", labelOffset: 18, values: [] }
+        ]
+      },
+      feedbackTrendChart: {
+        min: 0, max: 100,
+        axisFormatter: (value) => fmt(value, value >= 100 ? 0 : 1),
+        pointFormatter: (value) => fmt(value, 2),
+        series: []
+      }
+    };
+    const chartVisibility = Object.fromEntries(Object.entries(chartSets).map(([id, config]) => [id, config.series.map(() => true)]));
+
+    function drawLineChart(id, config) {
+      const canvas = document.getElementById(id);
+      if (!canvas || canvas.offsetWidth < 20 || canvas.offsetHeight < 20) return;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      const ctx = canvas.getContext("2d");
+      ctx.scale(ratio, ratio);
+      const padBox = { left: 52, right: 28, top: 30, bottom: 38 };
+      const plotW = width - padBox.left - padBox.right;
+      const plotH = height - padBox.top - padBox.bottom;
+      const labels = config.labels || chartLabels;
+      const hasAnyData = config.series.some((series) => series.values.some(Number.isFinite));
+      const hasVisibleData = config.series.some((series, index) => chartVisibility[id][index] !== false && series.values.some(Number.isFinite));
+      if (!hasVisibleData) {
+        ctx.fillStyle = "#8794a6";
+        ctx.font = "600 12px Inter, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(hasAnyData ? "当前指标已全部隐藏" : (dashboardData ? "所选日期暂无完整数据" : "数据加载中"), width / 2, height / 2);
+        return;
+      }
+      ctx.font = "11px Inter, system-ui, sans-serif";
+      ctx.lineWidth = 1;
+      for (let step = 0; step <= 4; step += 1) {
+        const y = padBox.top + plotH * step / 4;
+        const value = config.max - (config.max - config.min) * step / 4;
+        ctx.strokeStyle = "#e9edf2";
+        ctx.beginPath(); ctx.moveTo(padBox.left, y); ctx.lineTo(width - padBox.right, y); ctx.stroke();
+        const axisLabel = config.axisFormatter ? config.axisFormatter(value) : `${Math.round(value)}%`;
+        ctx.fillStyle = "#747d89"; ctx.textAlign = "right"; ctx.fillText(axisLabel, padBox.left - 10, y + 4);
+      }
+      ctx.strokeStyle = "#dfe4ea";
+      ctx.beginPath();
+      ctx.moveTo(padBox.left, padBox.top);
+      ctx.lineTo(padBox.left, padBox.top + plotH);
+      ctx.lineTo(width - padBox.right, padBox.top + plotH);
+      ctx.stroke();
+      labels.forEach((label, index) => {
+        const x = padBox.left + plotW * index / Math.max(labels.length - 1, 1);
+        ctx.fillStyle = "#747d89"; ctx.textAlign = "center"; ctx.fillText(label, x, height - 11);
+      });
+      if (config.emptyPrefix?.endIndex > 0) {
+        const endX = padBox.left + plotW * config.emptyPrefix.endIndex / Math.max(labels.length - 1, 1);
+        ctx.save();
+        ctx.fillStyle = "#a1acba";
+        ctx.font = "600 12px Inter, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(config.emptyPrefix.label, padBox.left + (endX - padBox.left) / 2, padBox.top + plotH / 2);
+        ctx.restore();
+      }
+      const labelGroups = labels.map(() => []);
+      config.series.forEach((series, seriesIndex) => {
+        if (chartVisibility[id][seriesIndex] === false) return;
+        ctx.strokeStyle = series.color; ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
+        ctx.beginPath();
+        let started = false;
+        series.values.forEach((value, index) => {
+          if (!Number.isFinite(value)) { started = false; return; }
+          const x = padBox.left + plotW * index / Math.max(series.values.length - 1, 1);
+          const y = padBox.top + (config.max - value) / (config.max - config.min) * plotH;
+          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        series.values.forEach((value, index) => {
+          if (!Number.isFinite(value)) return;
+          const x = padBox.left + plotW * index / Math.max(series.values.length - 1, 1);
+          const y = padBox.top + (config.max - value) / (config.max - config.min) * plotH;
+          ctx.fillStyle = series.color;
+          ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+          labelGroups[index].push({
+            x, pointY: y, preferredY: y + (series.labelOffset || -11),
+            text: config.pointFormatter ? config.pointFormatter(value) : value.toFixed(2), seriesIndex
+          });
+        });
+      });
+      const minLabelY = Math.max(12, padBox.top - 16);
+      const maxLabelY = padBox.top + plotH - 9;
+      const minGap = 15;
+      labelGroups.forEach((items) => {
+        if (!items.length) return;
+        items.sort((a,b) => a.preferredY - b.preferredY || a.seriesIndex - b.seriesIndex);
+        items.forEach((item, index) => {
+          item.labelY = Math.max(minLabelY, Math.min(maxLabelY, item.preferredY));
+          if (index) item.labelY = Math.max(item.labelY, items[index - 1].labelY + minGap);
+        });
+        if (items.at(-1).labelY > maxLabelY) {
+          items.at(-1).labelY = maxLabelY;
+          for (let index = items.length - 2; index >= 0; index -= 1) {
+            items[index].labelY = Math.min(items[index].labelY, items[index + 1].labelY - minGap);
+          }
+        }
+        if (items[0].labelY < minLabelY) {
+          const shift = minLabelY - items[0].labelY;
+          items.forEach((item) => { item.labelY += shift; });
+        }
+        ctx.save();
+        ctx.font = "700 10.5px Inter, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        items.forEach((item) => {
+          const textWidth = ctx.measureText(item.text).width;
+          const labelX = Math.max(textWidth / 2 + 4, Math.min(width - textWidth / 2 - 4, item.x));
+          ctx.lineWidth = 4;
+          ctx.lineJoin = "round";
+          ctx.strokeStyle = "rgba(255,255,255,.96)";
+          ctx.strokeText(item.text, labelX, item.labelY);
+          ctx.fillStyle = "#20242b";
+          ctx.fillText(item.text, labelX, item.labelY);
+        });
+        ctx.restore();
+      });
+    }
+
+    function drawAllCharts() {
+      Object.entries(chartSets).forEach(([id, config]) => drawLineChart(id, config));
+    }
+    document.querySelectorAll("[data-chart-legend]").forEach((legend) => {
+      const chartId = legend.dataset.chartLegend;
+      const allButton = legend.querySelector(".legend-all");
+      const seriesButtons = [...legend.querySelectorAll(".legend-series")];
+      const trendTabs = document.querySelector(`[data-trend-tabs="${chartId}"]`);
+      const trendTabButtons = trendTabs ? [...trendTabs.querySelectorAll("[data-trend-group]")] : [];
+      let activeGroup = trendTabButtons.find((button) => button.classList.contains("active"))?.dataset.trendGroup || null;
+      const groupSeriesButtons = () => seriesButtons.filter((button) =>
+        (!activeGroup || button.dataset.seriesGroup === activeGroup)
+        && !(button.dataset.overallOnly === "true" && selectedTrendTemplateId !== "all")
+      );
+      const groupSeriesIndexes = () => groupSeriesButtons().map((button) => Number(button.dataset.seriesIndex));
+      const trendCopy = {
+        plus: {
+          description: "➕唤起创作页点击漏斗 · 每日逐级人次转化率",
+          note: "逐级人次转化率 = 当前环节每日去重用户数 ÷ 上一环节每日去重用户数。"
+        },
+        feed: {
+          description: "Feed Template 点击漏斗 · 每日逐级人次转化率",
+          note: "逐级人次转化率 = 当前环节每日去重用户数 ÷ 上一环节每日去重用户数。"
+        },
+        result: {
+          description: "作品结果漏斗 · 每日逐级 PID 转化率",
+          note: "逐级 PID 转化率 = 当前环节去重 PID 数 ÷ 上一环节去重 PID 数；发布为创建自然日 D0 首次公开发布。"
+        }
+      };
+      const syncLegend = () => {
+        seriesButtons.forEach((button) => {
+          button.hidden = Boolean((activeGroup && button.dataset.seriesGroup !== activeGroup)
+            || (button.dataset.overallOnly === "true" && selectedTrendTemplateId !== "all"));
+        });
+        const activeIndexes = groupSeriesIndexes();
+        const allActive = activeIndexes.every((index) => chartVisibility[chartId][index]);
+        allButton.classList.toggle("active", allActive);
+        allButton.setAttribute("aria-pressed", String(allActive));
+        seriesButtons.forEach((button) => {
+          const active = chartVisibility[chartId][Number(button.dataset.seriesIndex)];
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+      };
+      allButton.addEventListener("click", () => {
+        const activeIndexes = groupSeriesIndexes();
+        const allActive = activeIndexes.every((index) => chartVisibility[chartId][index]);
+        activeIndexes.forEach((index) => { chartVisibility[chartId][index] = !allActive; });
+        syncLegend();
+        drawAllCharts();
+      });
+      seriesButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const index = Number(button.dataset.seriesIndex);
+          chartVisibility[chartId][index] = !chartVisibility[chartId][index];
+          syncLegend();
+          drawAllCharts();
+        });
+      });
+      trendTabButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activeGroup = button.dataset.trendGroup;
+          trendTabButtons.forEach((tabButton) => {
+            const selected = tabButton === button;
+            tabButton.classList.toggle("active", selected);
+            tabButton.setAttribute("aria-selected", String(selected));
+          });
+          const activeIndexes = new Set(groupSeriesIndexes());
+          chartVisibility[chartId] = chartVisibility[chartId].map((_, index) => activeIndexes.has(index));
+          if (chartId === "overviewChart") {
+            document.getElementById("trendDescription").textContent = `${trendCopy[activeGroup].description.split(" · ")[0]} · ${selectedTrendTemplateName} · ${trendCopy[activeGroup].description.split(" · ").slice(1).join(" · ")}${chartSets.overviewChart.scopeSuffix || ""}`;
+            document.getElementById("trendScopeNote").textContent = trendCopy[activeGroup].note;
+          }
+          syncLegend();
+          drawAllCharts();
+        });
+      });
+      if (activeGroup) {
+        const activeIndexes = new Set(groupSeriesIndexes());
+        chartVisibility[chartId] = chartVisibility[chartId].map((_, index) => activeIndexes.has(index));
+      }
+      legend.addEventListener("trendscopechange", () => {
+        const activeIndexes = new Set(groupSeriesIndexes());
+        chartVisibility[chartId] = chartVisibility[chartId].map((visible, index) => activeIndexes.has(index) ? visible : false);
+        activeIndexes.forEach((index) => { if (chartVisibility[chartId][index] == null) chartVisibility[chartId][index] = true; });
+        syncLegend();
+        drawAllCharts();
+      });
+      syncLegend();
+    });
+    window.addEventListener("resize", drawAllCharts);
+    function initializeLoadingState() {
+      [["usageBody",11],["durationBody",7],["feedbackBody",13],["shareBody",14]].forEach(([id, columns]) => {
+        document.getElementById(id).innerHTML = `<tr><td colspan="${columns}"><div class="empty-state">数据加载中</div></td></tr>`;
+      });
+      [
+        "feedbackCreated","feedbackPublished","feedbackPublishRate","feedbackPrivateRate",
+        "feedbackVv","feedbackAvgVv","feedbackAvgVvDur","feedback10sRate",
+        "shareTotal","sharePid","sharePidRate","shareH5Exposure","shareAppExposure",
+        "shareNewUsers","channelShareVia","channelCopyLink",
+        "channelX","channelTiktok","channelInstagram","channelMessages",
+        "durationTaskTemplate","durationTaskNoTemplate","durationTaskDelta",
+        "durationDialogueTemplate","durationDialogueNoTemplate","durationDialogueDelta",
+        "durationPreviewTemplate","durationPreviewNoTemplate","durationPreviewDelta",
+        "templateCreatorShare"
+      ].forEach((id) => setMetric(id,"—"));
+    }
+    initializeLoadingState();
+    updateRangeUI();
+    drawAllCharts();
+    const applyDashboardData = (data) => {
+        dashboardData = data;
+        dataLoadState = "ready";
+        const actualDates = [...new Set([
+          ...(data.chain_daily || []).map((row) => String(row.dt || "")),
+          ...(data.usage_daily || []).map((row) => String(row.dt || "")),
+          ...(data.template_daily || []).map((row) => String(row.dt || "")),
+          ...(data.comparison_daily || []).map((row) => String(row.dt || ""))
+        ].filter((value) => /^\d{8}$/.test(value)))].sort();
+        if (actualDates.length) {
+          const first = actualDates[0];
+          const last = actualDates[actualDates.length - 1];
+          earliestDataDate = parseDate(`${first.slice(0,4)}-${first.slice(4,6)}-${first.slice(6,8)}`);
+          latestDataDate = parseDate(`${last.slice(0,4)}-${last.slice(4,6)}-${last.slice(6,8)}`);
+          maxDate = new Date(latestDataDate);
+          minDate = new Date(Math.max(earliestDataDate.getTime(), maxDate.getTime() - 29 * dayMs));
+          selectedEnd = new Date(maxDate);
+          selectedStart = new Date(Math.max(minDate.getTime(), maxDate.getTime() - 6 * dayMs));
+          primaryDateState = { min: new Date(minDate), max: new Date(maxDate), start: new Date(selectedStart), end: new Date(selectedEnd) };
+        }
+        const acquisitionMeta = data.acquisition_meta || {};
+        const acquisitionStartKey = String(acquisitionMeta.feature_start_dt || acquisitionMeta.start_dt || "20260814");
+        const acquisitionEndKey = String(acquisitionMeta.latest_complete_dt || ymdKey(maxDate));
+        if (/^\d{8}$/.test(acquisitionStartKey) && /^\d{8}$/.test(acquisitionEndKey)) {
+          const acquisitionMin = parseDate(`${acquisitionStartKey.slice(0,4)}-${acquisitionStartKey.slice(4,6)}-${acquisitionStartKey.slice(6,8)}`);
+          const acquisitionMax = parseDate(`${acquisitionEndKey.slice(0,4)}-${acquisitionEndKey.slice(4,6)}-${acquisitionEndKey.slice(6,8)}`);
+          acquisitionDateState = { min: acquisitionMin, max: acquisitionMax, start: new Date(acquisitionMin), end: new Date(acquisitionMax) };
+        }
+        loadDateState(activeTab);
+        updateRangeUI();
+    };
+    const handleDashboardError = (error) => {
+        dataLoadState = "error";
+        dataStatus.textContent = `数据加载失败 · ${error.message}`;
+        rangeMessage.textContent = "请先运行刷新脚本生成 data/dashboard.json 与 data/dashboard.js。";
+        ["centerFunnel","feedFunnel","resultFunnel"].forEach((id) => {
+          document.getElementById(id).innerHTML = '<div class="funnel-empty">数据加载失败</div>';
+        });
+        [["usageBody",11],["durationBody",7],["feedbackBody",13],["shareBody",14]].forEach(([id, columns]) => {
+          document.getElementById(id).innerHTML = `<tr><td colspan="${columns}"><div class="empty-state">数据加载失败</div></td></tr>`;
+        });
+        ["feedbackCreated","feedbackPublished","feedbackPublishRate","feedbackPrivateRate","feedbackVv","feedbackAvgVv","feedbackAvgVvDur","feedback10sRate","shareTotal","sharePid","sharePidRate","shareH5Exposure","shareAppExposure","shareNewUsers"].forEach((id) => setMetric(id,"—"));
+        Object.values(chartSets).forEach((config) => config.series.forEach((series) => { series.values = []; }));
+        updatePanelStatuses();
+        drawAllCharts();
+    };
+    if (window.__LOOPIT_DASHBOARD_DATA__) {
+      applyDashboardData(window.__LOOPIT_DASHBOARD_DATA__);
+    } else {
+      fetch("data/dashboard.json", { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then(applyDashboardData)
+        .catch(handleDashboardError);
+    }
+  </script>
+<aside id="public-note" style="position:fixed;right:16px;bottom:16px;z-index:99;padding:8px 10px;background:#172136;color:#fff;border-radius:6px;font:12px sans-serif">公开作品集版 · 所有数据均为模拟数据</aside></body>
 </html>

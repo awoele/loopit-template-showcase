@@ -22,6 +22,8 @@ test("exports a complete GitHub Pages artifact under the repository base path", 
 
   await Promise.all([
     access(new URL("../out/dashboard/index.html", import.meta.url)),
+    access(new URL("../out/dashboard/data/dashboard.js", import.meta.url)),
+    access(new URL("../out/dashboard/data/dashboard.json", import.meta.url)),
     access(new URL("../out/robots.txt", import.meta.url)),
   ]);
 });
