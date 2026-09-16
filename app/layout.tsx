@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "模板体验方法展示｜公开版",
+  title: "Loopit 模板功能效果看板",
   description: "保留原有看板交互的公开模拟数据样例。",
   robots: {
     index: false,

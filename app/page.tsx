@@ -4,7 +4,7 @@ const assetBase = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
 const publicAsset = (path: string) => `${assetBase}${path}`;
 
 export const metadata: Metadata = {
-  title: "模板体验方法展示｜公开版",
+  title: "Loopit 模板功能效果看板",
   description: "保留原有看板交互的公开模拟数据样例。",
   robots: {
     index: false,
@@ -18,7 +18,7 @@ export default function Home() {
     <main>
       <iframe
         src={publicAsset("/dashboard/index.html")}
-        title="模板体验方法展示｜公开版"
+        title="Loopit 模板功能效果看板"
         allow="fullscreen"
       />
     </main>
