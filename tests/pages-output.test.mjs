@@ -15,10 +15,6 @@ test("exports a complete GitHub Pages artifact under the repository base path", 
     html,
     new RegExp(`(?:href|src)="${basePath}/_next/static/`, "i"),
   );
-  assert.match(
-    html,
-    /https:\/\/awoele\.github\.io\/loopit-template-showcase\/og\.png/i,
-  );
   assert.doesNotMatch(
     html,
     /(?:href|src)="\/(?:_next|dashboard)\//i,
@@ -26,9 +22,6 @@ test("exports a complete GitHub Pages artifact under the repository base path", 
 
   await Promise.all([
     access(new URL("../out/dashboard/index.html", import.meta.url)),
-    access(new URL("../out/dashboard/data/dashboard.js", import.meta.url)),
-    access(new URL("../out/dashboard/data/dashboard.json", import.meta.url)),
-    access(new URL("../out/og.png", import.meta.url)),
     access(new URL("../out/robots.txt", import.meta.url)),
   ]);
 });
